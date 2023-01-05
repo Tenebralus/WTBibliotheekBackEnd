@@ -28,6 +28,9 @@ public class Book {
 	
 	@OneToMany(mappedBy="book")
 	private List<Reservation> reservations;
+	
+	@OneToMany(mappedBy="book")
+	private List<BookCopy> bookcopies;
 
 	@ManyToMany
 	private List<Author> authors;
