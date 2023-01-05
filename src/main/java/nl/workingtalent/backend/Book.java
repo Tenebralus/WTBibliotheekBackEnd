@@ -1,4 +1,4 @@
-package wtbiblio;
+package nl.workingtalent.backend;
 
 import java.util.List;
 
