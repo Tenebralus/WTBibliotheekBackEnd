@@ -11,7 +11,6 @@ import javax.persistence.ManyToMany;
 
 @Entity
 public class Tag {
-	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private long id;
@@ -22,7 +21,6 @@ public class Tag {
 	@ManyToMany(mappedBy="tags") 
 	private List<Book> books;
 	//zodat niet hoeft book_tags class
-
 
 	public long getId() {
 		return id;
