@@ -22,4 +22,27 @@ public class Reservation {
 	@ManyToOne
 	private Book book;
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getDateReserved() {
+		return dateReserved;
+	}
+
+	public void setDateReserved(LocalDateTime dateReserved) {
+		this.dateReserved = dateReserved;
+	}
+
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
+	}
 }
