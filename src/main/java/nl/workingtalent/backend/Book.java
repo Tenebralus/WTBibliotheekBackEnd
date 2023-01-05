@@ -28,6 +28,9 @@ public class Book {
 	
 	@OneToMany(mappedBy="book")
 	private List<Reservation> reservations;
+
+	@ManyToMany
+	private List<Author> authors;
 	
 	public long getId() {
 		return id;
