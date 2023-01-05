@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Tag {
 	@Id
@@ -19,6 +21,7 @@ public class Tag {
 	private String name;
 	
 	@ManyToMany(mappedBy="tags") 
+	@JsonIgnore
 	private List<Book> books;
 	//zodat niet hoeft book_tags class
 
