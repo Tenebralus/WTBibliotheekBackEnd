@@ -1,6 +1,9 @@
 package nl.workingtalent.backend;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 @Entity
@@ -16,6 +19,7 @@ public class Author {
     private String lastName;
 
     @ManyToMany(mappedBy = "authors")
+    @JsonIgnore
     private List<Book> books;
 
     public long getId() {
