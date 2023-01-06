@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class User {
-	
+		
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -33,6 +33,9 @@ public class User {
 	@Column(nullable = false)
 	private LocalDateTime dateAccountCreated;
 	
+	@Column(nullable = true)
+	private LocalDateTime dateAccountDeleted;
+	
 	@Column(nullable = false)
 	private boolean active = true;
 	
@@ -41,7 +44,7 @@ public class User {
 	
 	@OneToMany(mappedBy = "user")
 	private List<Loan> loans;
-
+	
 	public long getId() {
 		return id;
 	}
@@ -90,12 +93,36 @@ public class User {
 		this.dateAccountCreated = dateAccountCreated;
 	}
 
+	public LocalDateTime getDateAccountDeleted() {
+		return dateAccountDeleted;
+	}
+
+	public void setDateAccountDeleted(LocalDateTime dateAccountDeleted) {
+		this.dateAccountDeleted = dateAccountDeleted;
+	}
+
 	public boolean isActive() {
 		return active;
 	}
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public List<Loan> getLoans() {
+		return loans;
+	}
+
+	public void setLoans(List<Loan> loans) {
+		this.loans = loans;
 	}
 	
 	
