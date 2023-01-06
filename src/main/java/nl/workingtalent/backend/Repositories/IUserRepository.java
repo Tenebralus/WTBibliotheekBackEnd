@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import nl.workingtalent.backend.Entities.Role;
 import nl.workingtalent.backend.Entities.User;
 
 public interface IUserRepository extends JpaRepository<User, Long>{ 
@@ -14,4 +15,5 @@ public interface IUserRepository extends JpaRepository<User, Long>{
 	List<User> findByDateAccountCreated(LocalDateTime dateAccountCreated);
 	List<User> findByDateAccountDeleted(LocalDateTime dateAccountDeleted);
 	List<User> findByActive(boolean active);
+	//List<User> findByRole(Role role);
 }

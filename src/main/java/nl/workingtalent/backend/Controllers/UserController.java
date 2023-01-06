@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import nl.workingtalent.backend.Entities.Role;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IUserRepository;
 
@@ -76,6 +77,13 @@ public class UserController {
 		return repo.findByActive(active);
 	}
 	
+	/*@RequestMapping(value = "user/role/{role}")
+	public List<User> findByRole(@PathVariable Role role)
+	{
+		return repo.findByRole(role);
+	}
+	*/
+	
 	@RequestMapping(value = "user/create", method = RequestMethod.POST)
 	public void createUser(@RequestBody User user)
 	{
@@ -94,7 +102,7 @@ public class UserController {
 		foundUser.setDateAccountDeleted(user.getDateAccountDeleted());
 		foundUser.setActive(user.isActive());
 		foundUser.setLoans(user.getLoans());
-		foundUser.setRoles(user.getRoles());
+		foundUser.setRole(user.getRole());
 		
 		repo.save(user);
 	}

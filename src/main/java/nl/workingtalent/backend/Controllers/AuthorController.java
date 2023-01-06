@@ -1,4 +1,4 @@
-package nl.workingtalent.backend;
+package nl.workingtalent.backend.Controllers;
 
 import java.util.List;
 
@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import nl.workingtalent.backend.Entities.Author;
+import nl.workingtalent.backend.Repositories.iAuthorRepository;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
