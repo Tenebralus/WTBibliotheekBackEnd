@@ -1,4 +1,4 @@
-package nl.workingtalent.backend;
+package nl.workingtalent.backend.Entities;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class Role {
 	private long id;
 	
 	@Column(length = 50, nullable = false)
-	private String type;
+	private String name;
 	
 	@ManyToMany
 	private List<User> users;
@@ -30,13 +30,19 @@ public class Role {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
 	}
-	
-	
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 }
