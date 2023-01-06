@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import nl.workingtalent.backend.Entities.Role;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IUserRepository;
 
@@ -102,7 +101,7 @@ public class UserController {
 		foundUser.setDateAccountDeleted(user.getDateAccountDeleted());
 		foundUser.setActive(user.isActive());
 		foundUser.setLoans(user.getLoans());
-		foundUser.setRole(user.getRole());
+		//foundUser.setiets(user.getiets());
 		
 		repo.save(user);
 	}
