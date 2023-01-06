@@ -1,4 +1,4 @@
-package nl.workingtalent.backend;
+package nl.workingtalent.backend.Entities;
 
 import javax.persistence.*;
 import java.util.List;

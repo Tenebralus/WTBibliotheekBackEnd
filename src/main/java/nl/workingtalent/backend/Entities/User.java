@@ -1,4 +1,4 @@
-package nl.workingtalent.backend;
+package nl.workingtalent.backend.Entities;
 
 import java.time.LocalDateTime;
 import java.util.List;
