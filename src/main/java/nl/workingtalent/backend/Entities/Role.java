@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Role {
@@ -17,9 +18,9 @@ public class Role {
 	private long id;
 	
 	@Column(length = 50, nullable = false)
-	private String name;
+	private boolean admin;
 	
-	@ManyToMany
+	@OneToMany(mappedBy = "role")
 	private List<User> users;
 
 	public long getId() {
@@ -30,12 +31,12 @@ public class Role {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public boolean isAdmin() {
+		return admin;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 	public List<User> getUsers() {

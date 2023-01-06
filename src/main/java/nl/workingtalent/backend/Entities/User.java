@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -39,8 +40,8 @@ public class User {
 	@Column(nullable = false)
 	private boolean active = true;
 	
-	@ManyToMany(mappedBy = "users")
-	private List<Role> roles;
+	@ManyToOne
+	private Role role;
 	
 	@OneToMany(mappedBy = "user")
 	private List<Loan> loans;
@@ -109,12 +110,12 @@ public class User {
 		this.active = active;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public List<Loan> getLoans() {
