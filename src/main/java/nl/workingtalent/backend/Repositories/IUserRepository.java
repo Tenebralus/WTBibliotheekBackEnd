@@ -14,5 +14,7 @@ public interface IUserRepository extends JpaRepository<User, Long>{
 	List<User> findByDateAccountCreated(LocalDateTime dateAccountCreated);
 	List<User> findByDateAccountDeleted(LocalDateTime dateAccountDeleted);
 	List<User> findByActive(boolean active);
-	//List<User> findByRole(Role role);
+	List<User> findByAdmin(boolean admin);
+	List<User> findByPassword(String password);
+	User findByEmailAddressAndPassword(String emailAddress, String password);
 }

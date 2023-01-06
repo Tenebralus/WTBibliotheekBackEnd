@@ -19,9 +19,16 @@ import nl.workingtalent.backend.Repositories.IUserRepository;
 public class UserController {
 	
 	// add create, update and delete [v]
-	// link with frontend
+	// link with frontend [v]
 	// being able to login
-	// possibly add loans and roles find aswell
+	
+	/*
+	 * van frontend krijg email + password
+	 * checken of combinatie goed is
+	 * checken of admin is
+	 */
+	// possibly add loans 
+	// roles find aswell [v]
 	
 	@Autowired
 	IUserRepository repo;
@@ -54,6 +61,24 @@ public class UserController {
 	public List<User> findByEmailAddress(@PathVariable String emailAddress)
 	{
 		return repo.findByEmailAddress(emailAddress);
+	}
+	
+	@RequestMapping(value = "user/password/{password}")
+	//We do not concern with privacy right now
+	//we need this to compare email with password for login
+	//if wrong; frontend give alert
+	public List<User> findByPassword(@PathVariable String password)
+	{
+		return repo.findByPassword(password);
+	}
+	
+	@RequestMapping(value = "user/userpass/{emailAddress}:{password}")
+	public User findByEmailAddressAndPassword(@PathVariable String emailAddress, @PathVariable String password)
+	{
+		return repo.findByEmailAddressAndPassword(emailAddress, password);
+		//gives user or null if false
+		//not yet specified if user exists if password is false etc
+		//later: check without logout new browser
 	}
 	
 	@RequestMapping(value = "user/dateaccountcreated/{dateAccountCreated}")
@@ -98,10 +123,11 @@ public class UserController {
 		foundUser.setEmailAddress(user.getEmailAddress());
 		foundUser.setPassword(user.getPassword());
 		//foundUser.setDateAccountCreated(user.getDateAccountCreated());
+		//you probably do not want to edit the creation date
 		foundUser.setDateAccountDeleted(user.getDateAccountDeleted());
 		foundUser.setActive(user.isActive());
 		foundUser.setLoans(user.getLoans());
-		//foundUser.setiets(user.getiets());
+		foundUser.setAdmin(user.isAdmin());
 		
 		repo.save(user);
 	}
