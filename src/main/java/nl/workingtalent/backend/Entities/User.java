@@ -40,8 +40,8 @@ public class User {
 	@Column(nullable = false)
 	private boolean active = true;
 	
-	@ManyToOne
-	private Role role;
+	@Column(nullable = false)
+	private boolean admin;
 	
 	@OneToMany(mappedBy = "user")
 	private List<Loan> loans;
@@ -110,12 +110,12 @@ public class User {
 		this.active = active;
 	}
 
-	public Role getRole() {
-		return role;
+	public boolean isAdmin() {
+		return admin;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 	public List<Loan> getLoans() {
