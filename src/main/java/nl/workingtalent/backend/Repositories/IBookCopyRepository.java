@@ -13,6 +13,7 @@ public interface IBookCopyRepository extends JpaRepository<BookCopy, Long>{
 	BookCopy findByBookCopyNr(int bookCopyNr);
 	BookCopy findByStatus(String status);
 	BookCopy findByBook(Book book);
-	BookCopy findByLoans(List<Loan> loans);
+	BookCopy findByLoans(Loan loans);
+	BookCopy findByLoansIn(List<Loan> loans);
 	
 }

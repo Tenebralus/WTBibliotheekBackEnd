@@ -10,5 +10,6 @@ import nl.workingtalent.backend.Entities.Tag;
 public interface ITagRespository extends JpaRepository<Tag, Long> {
 	//List<Tag> findByName(String name);
 	Tag findByName(String name);
-	List<Tag> findByBook(Book book);
+	List<Tag> findByBooksIn(List<Book> books);
+	//List<Tag> findByBooks(List<Book> books);
 }

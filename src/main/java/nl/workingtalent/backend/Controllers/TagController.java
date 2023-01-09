@@ -42,10 +42,11 @@ public class TagController {
 		return repo.findByName(name);
 	}
 	
-	@RequestMapping(value = "tag/name/{name}")
-	public List<Tag> findByBook(@PathVariable Book book)
+	@RequestMapping(value = "tag/books/{books}")
+	public List<Tag> findByBooksIn(@PathVariable List<Book> books)
+	//public List<Tag> findByBooks(@PathVariable List<Book> books)
 	{
-		return repo.findByBook(book);
+		return repo.findByBooksIn(books);
 	}
 	
 	@RequestMapping(value = "tag/create", method = RequestMethod.POST)

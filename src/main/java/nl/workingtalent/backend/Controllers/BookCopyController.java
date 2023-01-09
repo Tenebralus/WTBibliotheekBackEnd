@@ -57,10 +57,16 @@ public class BookCopyController {
 	}
 	
 	@RequestMapping(value = "bookcopy/loans/{loans}")
-	public BookCopy findByLoans(@PathVariable List<Loan> loans)
+	public BookCopy findByLoans(@PathVariable Loan loans)
 	{
 		return repo.findByLoans(loans);
 	}
+	
+	/*@RequestMapping(value = "bookcopy/loans/{loans}")
+	public BookCopy findByLoansIn(@PathVariable List<Loan> loans)
+	{
+		return repo.findByLoansIn(loans);
+	}*/
 	
 	@RequestMapping(value = "bookcopy/create", method = RequestMethod.POST)
 	public void createBookCopy(@RequestBody BookCopy bookcopy)
