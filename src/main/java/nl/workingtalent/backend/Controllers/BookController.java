@@ -49,4 +49,24 @@ public class BookController {
 	{
 		repo.save(book);
 	}
+	
+	@RequestMapping(value = "book/update/{id}", method = RequestMethod.PUT)
+	public void updateBook(@PathVariable long id, @RequestBody Book book )
+	{
+		Book foundBook = findById(id);
+		foundBook.setTitle(book.getTitle());
+		foundBook.setIsbn(book.getIsbn());
+		foundBook.setTags(book.getTags());
+		foundBook.setReservations(book.getReservations());
+		foundBook.setBookcopies(book.getBookcopies());
+		foundBook.setAuthors(book.getAuthors());
+		
+		repo.save(book);
+	}
+	
+	@RequestMapping(value = "book/delete/{id}", method = RequestMethod.DELETE)
+	public void deleteBook(@PathVariable long id)
+	{
+		repo.deleteById(id);
+	}
 }
