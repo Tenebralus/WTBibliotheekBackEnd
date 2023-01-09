@@ -28,7 +28,7 @@ public class UserController {
 	 * checken of admin is
 	 */
 	// possibly add loans 
-	// roles find aswell [v]
+	// roles(admin) find aswell [v]
 	
 	@Autowired
 	IUserRepository repo;
@@ -39,6 +39,7 @@ public class UserController {
 		return repo.findAll();
 	}
 	
+	//do we want to keep this of just use findById alone?
 	@RequestMapping(value = "user/id/{id}")
 	public User findUserById(@PathVariable long id)
 	{
@@ -100,13 +101,6 @@ public class UserController {
 	{
 		return repo.findByActive(active);
 	}
-	
-	/*@RequestMapping(value = "user/role/{role}")
-	public List<User> findByRole(@PathVariable Role role)
-	{
-		return repo.findByRole(role);
-	}
-	*/
 	
 	@RequestMapping(value = "user/create", method = RequestMethod.POST)
 	public void createUser(@RequestBody User user)

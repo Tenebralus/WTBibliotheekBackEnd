@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.Entities.Book;
+import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IBookRepository;
 
 @RestController
@@ -44,9 +45,52 @@ public class BookController {
 		return repo.findByIsbn(isbn);
 	}
 	
+	/*@RequestMapping(value = "book/tags/{tags}")
+	public List<Tag> findByTags(@PathVariable List<Tag> tags)
+	{
+		return repo.findByTags(tags);
+	}
+	
+	@RequestMapping(value = "book/reservations/{reservations}")
+	public List<Reservation> findByReservations(@PathVariable List<Reservation> reservations)
+	{
+		return repo.findByReservations(reservations);
+	}
+	
+	@RequestMapping(value = "book/bookcopies/{bookcopies}")
+	public List<BookCopy> findByBookCopies(@PathVariable List<BookCopy> bookcopies)
+	{
+		return repo.findByBookCopies(bookcopies);
+	}
+	
+	@RequestMapping(value = "book/authors/{authors}")
+	public List<Authors> findByAuthors(@PathVariable List<Author> authors)
+	{
+		return repo.findByAuthors(authors);
+	}*/
+	
 	@RequestMapping(value = "book/create", method = RequestMethod.POST)
 	public void createBook(@RequestBody Book book)
 	{
 		repo.save(book);
+	}
+	
+	@RequestMapping(value = "book/update/{id}", method = RequestMethod.PUT)
+	public void updateBook(@PathVariable long id, @RequestBody Book book )
+	{
+		Book foundBook = findById(id);
+		foundBook.setTitle(book.getTitle());
+		foundBook.setIsbn(book.getIsbn());
+		foundBook.setTags(book.getTags());
+		foundBook.setReservations(book.getReservations());
+		foundBook.setBookcopies(book.getBookcopies());
+		foundBook.setAuthors(book.getAuthors());
+		repo.save(book);
+	}
+	
+	@RequestMapping(value = "book/delete/{id}", method = RequestMethod.DELETE)
+	public void deleteBook(@PathVariable long id)
+	{
+		repo.deleteById(id);
 	}
 }
