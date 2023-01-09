@@ -39,9 +39,8 @@ public class UserController {
 		return repo.findAll();
 	}
 	
-	//do we want to keep this of just use findById alone?
 	@RequestMapping(value = "user/id/{id}")
-	public User findUserById(@PathVariable long id)
+	public User findById(@PathVariable long id)
 	{
 		return repo.findById(id).get();
 	}
@@ -111,7 +110,7 @@ public class UserController {
 	@RequestMapping(value = "user/update/{id}", method = RequestMethod.PUT)
 	public void updateUser(@PathVariable long id, @RequestBody User user )
 	{
-		User foundUser = findUserById(id);
+		User foundUser = findById(id);
 		foundUser.setFirstName(user.getFirstName());
 		foundUser.setLastName(user.getLastName());
 		foundUser.setEmailAddress(user.getEmailAddress());
