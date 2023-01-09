@@ -47,6 +47,9 @@ public class User implements Serializable{
 	@OneToMany(mappedBy = "user")
 	private List<Loan> loans;
 	
+	@OneToMany(mappedBy = "user")
+	private List<Reservation> reservations;
+	
 	public long getId() {
 		return id;
 	}

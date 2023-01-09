@@ -18,14 +18,15 @@ import nl.workingtalent.backend.Repositories.ITagRepository;
 public class TagController {
 	
 	@Autowired
-	private ITagRepository repo;
+	ITagRespository repo;
+
 	
 	@RequestMapping(value = "tag/all")
 	public List<Tag> findAllTags()
 	{
 		return repo.findAll();
 	}
-	
+
 	@RequestMapping(value = "tag/id/{id}")
 	public Tag findById(@PathVariable long id)
 	{
@@ -36,6 +37,14 @@ public class TagController {
 	public List<Tag> findByName(@PathVariable String name)
 	{
 		return repo.findByName(name);
+	}
+	
+
+	@RequestMapping(value = "tag/books/{books}")
+	public List<Tag> findByBooksIn(@PathVariable List<Book> books)
+	//public List<Tag> findByBooks(@PathVariable List<Book> books)
+	{
+		return repo.findByBooksIn(books);
 	}
 	
 	@RequestMapping(value = "tag/create", method = RequestMethod.POST)
@@ -50,7 +59,6 @@ public class TagController {
 		Tag foundTag = findById(id);
 		foundTag.setName(tag.getName());
 		foundTag.setBooks(tag.getBooks());
-		
 		repo.save(tag);
 	}
 	
