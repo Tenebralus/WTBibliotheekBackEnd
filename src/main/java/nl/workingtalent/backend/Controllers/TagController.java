@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.Tag;
-import nl.workingtalent.backend.Entities.User;
-import nl.workingtalent.backend.Repositories.ITagRespository;
-import nl.workingtalent.backend.Repositories.IUserRepository;
+import nl.workingtalent.backend.Repositories.ITagRepository;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -22,6 +19,7 @@ public class TagController {
 	
 	@Autowired
 	ITagRespository repo;
+
 	
 	@RequestMapping(value = "tag/all")
 	public List<Tag> findAllTags()
@@ -36,12 +34,12 @@ public class TagController {
 	}
 	
 	@RequestMapping(value = "tag/name/{name}")
-	public Tag findByName(@PathVariable String name)
-	//or List<Tag>
+	public List<Tag> findByName(@PathVariable String name)
 	{
 		return repo.findByName(name);
 	}
 	
+
 	@RequestMapping(value = "tag/books/{books}")
 	public List<Tag> findByBooksIn(@PathVariable List<Book> books)
 	//public List<Tag> findByBooks(@PathVariable List<Book> books)
@@ -69,5 +67,4 @@ public class TagController {
 	{
 		repo.deleteById(id);
 	}
-	
 }
