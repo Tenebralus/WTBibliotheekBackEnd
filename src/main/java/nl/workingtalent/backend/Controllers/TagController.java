@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.Tag;
 import nl.workingtalent.backend.Repositories.ITagRepository;
 
@@ -18,7 +19,7 @@ import nl.workingtalent.backend.Repositories.ITagRepository;
 public class TagController {
 	
 	@Autowired
-	ITagRespository repo;
+	ITagRepository repo;
 
 	
 	@RequestMapping(value = "tag/all")
