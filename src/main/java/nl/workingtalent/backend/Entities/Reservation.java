@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Reservation {
 	
@@ -20,9 +22,11 @@ public class Reservation {
 	private LocalDateTime dateReserved;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Book book;
 	
 	@ManyToOne
+	@JsonIgnore
 	private User user;
 
 	public User getUser() {
