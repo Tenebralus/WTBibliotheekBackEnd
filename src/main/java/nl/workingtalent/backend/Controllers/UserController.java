@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import nl.workingtalent.backend.Repositories.IUserRepository;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
+@RequestMapping(path = "/employees")
 public class UserController {
 	
 	// add create, update and delete [v]
@@ -33,6 +35,7 @@ public class UserController {
 	@Autowired
 	IUserRepository repo;
 	
+	@GetMapping(path="/", produces = "application/json")
 	@RequestMapping(value = "user/all")
 	public List<User> findAllUsers()
 	{
