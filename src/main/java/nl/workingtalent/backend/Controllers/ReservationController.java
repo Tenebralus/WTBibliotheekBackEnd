@@ -33,12 +33,13 @@ public class ReservationController {
 	private IUserRepository userRepo;
 	
 	@GetMapping("/user/{userId}/reservations")
-	public List<Reservation> getReservationsByUserId(@PathVariable(value= "userId") Long userId) {
+	public List<Reservation> getReservationsByUserId(@PathVariable Long userId) {
 		return reservationRepo.findByUserId(userId);
 	}
 	
+	
 	@PostMapping("book/{bookId}/createreservation")
-	public Reservation createReservation(@PathVariable(value = "bookId") Long bookId) {
+	public Reservation createReservation(@PathVariable Long bookId) {
 		Reservation reservation = new Reservation();
 		Book book = new Book();
 		book.setId(bookId);
@@ -54,7 +55,7 @@ public class ReservationController {
 	}
 	
 	@GetMapping("/reservation/{bookId}")
-	public List<Reservation> findByBookId(@PathVariable(value="bookId") Long bookId) {
+	public List<Reservation> findByBookId(@PathVariable Long bookId) {
 		return reservationRepo.findByBookId(bookId);
 	}
 	
