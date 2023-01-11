@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import nl.workingtalent.backend.Entities.Author;
 import nl.workingtalent.backend.Entities.Book;
+import nl.workingtalent.backend.Entities.BookCopy;
+import nl.workingtalent.backend.Entities.Reservation;
+import nl.workingtalent.backend.Entities.Tag;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IBookRepository;
 
@@ -45,7 +49,7 @@ public class BookController {
 		return repo.findByIsbn(isbn);
 	}
 	
-	/*@RequestMapping(value = "book/tags/{tags}")
+	@RequestMapping(value = "book/tags/{tags}")
 	public List<Tag> findByTags(@PathVariable List<Tag> tags)
 	{
 		return repo.findByTags(tags);
@@ -64,10 +68,10 @@ public class BookController {
 	}
 	
 	@RequestMapping(value = "book/authors/{authors}")
-	public List<Authors> findByAuthors(@PathVariable List<Author> authors)
+	public List<Author> findByAuthors(@PathVariable List<Author> authors)
 	{
 		return repo.findByAuthors(authors);
-	}*/
+	}
 	
 	@RequestMapping(value = "book/create", method = RequestMethod.POST)
 	public void createBook(@RequestBody Book book)
