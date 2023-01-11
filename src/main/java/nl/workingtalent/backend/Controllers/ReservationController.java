@@ -60,6 +60,18 @@ public class ReservationController {
 		return repo.save(reservation);
 	}
 	
+
 	//update & delete
+
+	@RequestMapping("reservation/all")
+	public List<Reservation> findAllReservations() {
+		return reservationRepo.findAll();
+	}
+	
+	@GetMapping("/reservation/{bookId}")
+	public List<Reservation> findByBookId(@PathVariable(value="bookId") Long bookId) {
+		return reservationRepo.findByBookId(bookId);
+	}
+
 	
 }
