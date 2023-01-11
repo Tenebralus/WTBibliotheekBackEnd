@@ -30,6 +30,7 @@ public class BookCopy {
 	private Book book;
 	
 	@OneToMany(mappedBy="bookCopy")
+	@JsonIgnore
 	private List<Loan> loans;
 
 	public long getId() {
