@@ -44,6 +44,11 @@ public class ReservationController {
 		return repo.findById(id).get();
 	}
 	
+	@GetMapping("/reservation/{bookId}")
+	public List<Reservation> findByBookId(@PathVariable(value="bookId") Long bookId) {
+		return repo.findByBookId(bookId);
+	}
+	
 	@GetMapping("/user/{userId}/reservations")
 	public List<Reservation> getReservationsByUserId(@PathVariable(value= "userId") Long userId) {
 		return repo.findByUserId(userId);
@@ -63,15 +68,8 @@ public class ReservationController {
 
 	//update & delete
 
-	@RequestMapping("reservation/all")
-	public List<Reservation> findAllReservations() {
-		return reservationRepo.findAll();
-	}
 	
-	@GetMapping("/reservation/{bookId}")
-	public List<Reservation> findByBookId(@PathVariable(value="bookId") Long bookId) {
-		return reservationRepo.findByBookId(bookId);
-	}
+	
 
 	
 }

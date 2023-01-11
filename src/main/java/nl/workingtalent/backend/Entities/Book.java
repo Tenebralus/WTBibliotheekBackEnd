@@ -35,6 +35,7 @@ public class Book {
 	private List<Reservation> reservations;
 	
 	@OneToMany(mappedBy="book")
+	@JsonIgnore
 	private List<BookCopy> bookcopies;
 
 	@ManyToMany
