@@ -83,6 +83,7 @@ public class ReservationController {
 		//probably you do not want to edit times in the past
 		foundReservation.setBook(reservation.getBook());
 		foundReservation.setUser(reservation.getUser());
+		repo.save(foundReservation);
 	}
 	
 	@DeleteMapping(value = "reservation/delete/{id}")
