@@ -82,7 +82,7 @@ public class BookCopyController {
 		foundBookCopy.setStatus(bookcopy.getStatus());
 		foundBookCopy.setBook(bookcopy.getBook());
 		foundBookCopy.setLoans(bookcopy.getLoans());
-		repo.save(bookcopy);
+		repo.save(foundBookCopy);
 	}
 	
 	@RequestMapping(value = "bookopy/delete/{id}", method = RequestMethod.DELETE)

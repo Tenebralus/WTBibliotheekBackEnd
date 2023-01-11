@@ -109,8 +109,7 @@ public class UserController {
 		foundUser.setActive(user.isActive());
 		foundUser.setLoans(user.getLoans());
 		foundUser.setAdmin(user.isAdmin());
-		
-		repo.save(user);
+		repo.save(foundUser);
 	}
 	
 	@RequestMapping(value = "user/delete/{id}", method = RequestMethod.DELETE)

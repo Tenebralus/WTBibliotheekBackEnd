@@ -89,7 +89,7 @@ public class BookController {
 		foundBook.setReservations(book.getReservations());
 		foundBook.setBookcopies(book.getBookcopies());
 		foundBook.setAuthors(book.getAuthors());
-		repo.save(book);
+		repo.save(foundBook);
 	}
 	
 	@RequestMapping(value = "book/delete/{id}", method = RequestMethod.DELETE)
