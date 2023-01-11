@@ -23,7 +23,7 @@ public class Tag {
 	@ManyToMany(mappedBy="tags") 
 	@JsonIgnore
 	private List<Book> books;
-	//zodat niet hoeft book_tags class
+	//this ensure that there is no need for a book_tags class 
 
 	public long getId() {
 		return id;

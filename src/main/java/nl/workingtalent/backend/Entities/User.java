@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User implements Serializable{
 		
@@ -45,7 +47,12 @@ public class User implements Serializable{
 	private boolean admin;
 	
 	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Loan> loans;
+	
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Reservation> reservations;
 	
 	public long getId() {
 		return id;
