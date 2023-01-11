@@ -1,10 +1,8 @@
 package nl.workingtalent.backend.Controllers;
 
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.ManyToMany;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import nl.workingtalent.backend.Entities.Author;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Repositories.iAuthorRepository;
