@@ -24,17 +24,29 @@ import nl.workingtalent.backend.Repositories.IUserRepository;
 public class ReservationController {
 	
 	@Autowired
-	private IReservationRepository reservationRepo;
+	private IReservationRepository repo;
 	
-	@Autowired
+	/*@Autowired
 	private IBookRepository bookRepo;
 	
 	@Autowired
-	private IUserRepository userRepo;
+	private IUserRepository userRepo;*/
+	
+	@RequestMapping(value = "reservation/all")
+	public List<Reservation> findAllReservations()
+	{
+		return repo.findAll();
+	}
+	
+	@RequestMapping(value = "reservation/id/{id}")
+	public Reservation findById(@PathVariable long id)
+	{
+		return repo.findById(id).get();
+	}
 	
 	@GetMapping("/user/{userId}/reservations")
 	public List<Reservation> getReservationsByUserId(@PathVariable(value= "userId") Long userId) {
-		return reservationRepo.findByUserId(userId);
+		return repo.findByUserId(userId);
 	}
 	
 	@PostMapping("book/{bookId}/createreservation")
@@ -45,9 +57,12 @@ public class ReservationController {
 		reservation.setBook(book);
 		reservation.setDateReserved(LocalDateTime.now());
 		
-		return reservationRepo.save(reservation);
+		return repo.save(reservation);
 	}
 	
+
+	//update & delete
+
 	@RequestMapping("reservation/all")
 	public List<Reservation> findAllReservations() {
 		return reservationRepo.findAll();
@@ -57,5 +72,6 @@ public class ReservationController {
 	public List<Reservation> findByBookId(@PathVariable(value="bookId") Long bookId) {
 		return reservationRepo.findByBookId(bookId);
 	}
+
 	
 }

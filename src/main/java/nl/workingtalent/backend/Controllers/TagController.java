@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,13 +50,13 @@ public class TagController {
 		return repo.findByBooksIn(books);
 	}
 	
-	@RequestMapping(value = "tag/create", method = RequestMethod.POST)
+	@PostMapping(value = "tag/create")
 	public void createTag(@RequestBody Tag tag)
 	{
 		repo.save(tag);
 	}
 	
-	@RequestMapping(value = "tag/update/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "tag/update/{id}")
 	public void updateTag(@PathVariable long id, @RequestBody Tag tag )
 	{
 		Tag foundTag = findById(id);
@@ -62,7 +65,7 @@ public class TagController {
 		repo.save(foundTag);
 	}
 	
-	@RequestMapping(value = "tag/delete/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "tag/delete/{id}")
 	public void deleteTag(@PathVariable long id)
 	{
 		repo.deleteById(id);
