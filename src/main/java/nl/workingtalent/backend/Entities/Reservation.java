@@ -2,9 +2,9 @@ package nl.workingtalent.backend.Entities;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,12 +22,10 @@ public class Reservation {
 	@Column(nullable=false)
 	private LocalDateTime dateReserved;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnore
+	@ManyToOne
 	private Book book;
 	
 	@ManyToOne
-	@JsonIgnore
 	private User user;
 
 	public long getId() {

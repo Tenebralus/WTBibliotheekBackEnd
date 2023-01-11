@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class BookCopy {
 
@@ -24,6 +26,7 @@ public class BookCopy {
 	private String status;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Book book;
 	
 	@OneToMany(mappedBy="bookCopy")

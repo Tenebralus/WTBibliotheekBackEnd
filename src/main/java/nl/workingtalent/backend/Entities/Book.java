@@ -2,6 +2,7 @@ package nl.workingtalent.backend.Entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +30,8 @@ public class Book {
 	@ManyToMany
 	private List<Tag> tags;
 	
-	@OneToMany(mappedBy="book", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="book")
+	@JsonIgnore
 	private List<Reservation> reservations;
 	
 	@OneToMany(mappedBy="book")

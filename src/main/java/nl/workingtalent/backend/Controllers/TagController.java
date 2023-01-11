@@ -43,7 +43,6 @@ public class TagController {
 
 	@RequestMapping(value = "tag/books/{books}")
 	public List<Tag> findByBooksIn(@PathVariable List<Book> books)
-	//public List<Tag> findByBooks(@PathVariable List<Book> books)
 	{
 		return repo.findByBooksIn(books);
 	}
@@ -60,7 +59,7 @@ public class TagController {
 		Tag foundTag = findById(id);
 		foundTag.setName(tag.getName());
 		foundTag.setBooks(tag.getBooks());
-		repo.save(tag);
+		repo.save(foundTag);
 	}
 	
 	@RequestMapping(value = "tag/delete/{id}", method = RequestMethod.DELETE)
