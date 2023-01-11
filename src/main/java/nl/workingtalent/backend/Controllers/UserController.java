@@ -17,25 +17,11 @@ import nl.workingtalent.backend.Repositories.IUserRepository;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
-@RequestMapping(path = "/employees")
 public class UserController {
-	
-	// add create, update and delete [v]
-	// link with frontend [v]
-	// being able to login
-	
-	/*
-	 * van frontend krijg email + password
-	 * checken of combinatie goed is
-	 * checken of admin is
-	 */
-	// possibly add loans 
-	// roles(admin) find aswell [v]
 	
 	@Autowired
 	IUserRepository repo;
 	
-	@GetMapping(path="/", produces = "application/json")
 	@RequestMapping(value = "user/all")
 	public List<User> findAllUsers()
 	{

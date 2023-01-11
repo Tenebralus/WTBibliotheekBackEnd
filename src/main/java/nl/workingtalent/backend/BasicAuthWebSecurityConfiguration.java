@@ -1,5 +1,6 @@
 package nl.workingtalent.backend;
 
+/* For simple login system
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class BasicAuthWebSecurityConfiguration
     return http.build();
   }
 
+  
   @Bean
   public InMemoryUserDetailsManager userDetailsService() {
     UserDetails user = User
@@ -42,4 +44,4 @@ public class BasicAuthWebSecurityConfiguration
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder(8);
   }
-}
+}*/
