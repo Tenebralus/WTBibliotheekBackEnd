@@ -65,7 +65,7 @@ public class AuthorController {
 		foundAuthor.setBooks(author.getBooks());
 	}
 	
-	@RequestMapping(value = "user/delete/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "author/delete/{id}", method = RequestMethod.DELETE)
 	public void deleteAuthor(@PathVariable long id)
 	{
 		repo.deleteById(id);
