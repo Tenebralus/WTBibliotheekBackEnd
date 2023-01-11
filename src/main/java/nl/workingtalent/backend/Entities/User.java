@@ -51,6 +51,7 @@ public class User implements Serializable{
 	private List<Loan> loans;
 	
 	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Reservation> reservations;
 	
 	public long getId() {

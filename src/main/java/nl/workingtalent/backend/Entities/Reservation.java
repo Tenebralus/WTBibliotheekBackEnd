@@ -22,11 +22,9 @@ public class Reservation {
 	private LocalDateTime dateReserved;
 	
 	@ManyToOne
-	@JsonIgnore
 	private Book book;
 	
 	@ManyToOne
-	@JsonIgnore
 	private User user;
 
 	public long getId() {

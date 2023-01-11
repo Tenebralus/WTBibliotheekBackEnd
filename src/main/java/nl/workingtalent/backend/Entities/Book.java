@@ -29,6 +29,7 @@ public class Book {
 	private List<Tag> tags;
 	
 	@OneToMany(mappedBy="book")
+	@JsonIgnore
 	private List<Reservation> reservations;
 	
 	@OneToMany(mappedBy="book")
