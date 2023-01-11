@@ -89,10 +89,10 @@ public class BookCopyController {
 	
 	//not want to delete bookcopies, just edit them into archived
 	@PutMapping(value = "bookcopy/archive/{id}")
-	public void deleteBookCopy(@PathVariable long id)
+	public void archiveBookCopy(@PathVariable long id)
 	{
 		BookCopy foundBookCopy = findById(id);
-		foundBookCopy.setStatus("gearchiveerd");
+		foundBookCopy.setStatus("archived");
 		repo.save(foundBookCopy);
 	}
 

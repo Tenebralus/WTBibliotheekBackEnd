@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,17 +24,29 @@ import nl.workingtalent.backend.Repositories.IUserRepository;
 public class ReservationController {
 	
 	@Autowired
-	private IReservationRepository reservationRepo;
+	private IReservationRepository repo;
 	
-	@Autowired
+	/*@Autowired
 	private IBookRepository bookRepo;
 	
 	@Autowired
-	private IUserRepository userRepo;
+	private IUserRepository userRepo;*/
+	
+	@RequestMapping(value = "reservation/all")
+	public List<Reservation> findAllReservations()
+	{
+		return repo.findAll();
+	}
+	
+	@RequestMapping(value = "reservation/id/{id}")
+	public Reservation findById(@PathVariable long id)
+	{
+		return repo.findById(id).get();
+	}
 	
 	@GetMapping("/user/{userId}/reservations")
 	public List<Reservation> getReservationsByUserId(@PathVariable(value= "userId") Long userId) {
-		return reservationRepo.findByUserId(userId);
+		return repo.findByUserId(userId);
 	}
 	
 	@PostMapping("book/{bookId}/createreservation")
@@ -44,6 +57,9 @@ public class ReservationController {
 		reservation.setBook(book);
 		reservation.setDateReserved(LocalDateTime.now());
 		
-		return reservationRepo.save(reservation);
+		return repo.save(reservation);
 	}
+	
+	//update & delete
+	
 }
