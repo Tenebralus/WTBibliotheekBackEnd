@@ -2,7 +2,6 @@ package nl.workingtalent.backend.Controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -99,7 +98,7 @@ public class UserController {
 	}
 	
 	@PutMapping(value = "user/update/{id}")
-	public void updateUser(@PathVariable long id, @RequestBody User user )
+	public void updateUser(@PathVariable long id, @RequestBody User user)
 	{
 		User foundUser = findById(id);
 		foundUser.setFirstName(user.getFirstName());
