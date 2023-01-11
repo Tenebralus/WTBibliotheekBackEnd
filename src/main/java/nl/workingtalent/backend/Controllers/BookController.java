@@ -45,7 +45,7 @@ public class BookController {
 		return repo.findByIsbn(isbn);
 	}
 	
-	/*@RequestMapping(value = "book/tags/{tags}")
+	@RequestMapping(value = "book/tags/{tags}")
 	public List<Tag> findByTags(@PathVariable List<Tag> tags)
 	{
 		return repo.findByTags(tags);
@@ -67,7 +67,7 @@ public class BookController {
 	public List<Authors> findByAuthors(@PathVariable List<Author> authors)
 	{
 		return repo.findByAuthors(authors);
-	}*/
+	}
 	
 	@RequestMapping(value = "book/create", method = RequestMethod.POST)
 	public void createBook(@RequestBody Book book)
