@@ -76,7 +76,7 @@ public class LoanController {
 		foundLoan.setDateReturned(loan.getDateReturned());
 		foundLoan.setBookCopy(loan.getBookCopy());
 		foundLoan.setUser(loan.getUser());
-		repo.save(loan);
+		repo.save(foundLoan);
 	}
 	
 	@RequestMapping(value = "loan/delete/{id}", method = RequestMethod.DELETE)

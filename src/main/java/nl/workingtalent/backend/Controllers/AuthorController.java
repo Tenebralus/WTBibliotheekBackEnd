@@ -63,6 +63,7 @@ public class AuthorController {
 		foundAuthor.setFirstName(author.getFirstName());
 		foundAuthor.setLastName(author.getLastName());
 		foundAuthor.setBooks(author.getBooks());
+		repo.save(foundAuthor);
 	}
 	
 	@RequestMapping(value = "author/delete/{id}", method = RequestMethod.DELETE)

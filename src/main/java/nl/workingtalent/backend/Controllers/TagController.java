@@ -59,7 +59,7 @@ public class TagController {
 		Tag foundTag = findById(id);
 		foundTag.setName(tag.getName());
 		foundTag.setBooks(tag.getBooks());
-		repo.save(tag);
+		repo.save(foundTag);
 	}
 	
 	@RequestMapping(value = "tag/delete/{id}", method = RequestMethod.DELETE)
