@@ -26,7 +26,6 @@ public class BookCopy {
 	private String status;
 	
 	@ManyToOne
-	@JsonIgnore
 	private Book book;
 	
 	@OneToMany(mappedBy="bookCopy")
