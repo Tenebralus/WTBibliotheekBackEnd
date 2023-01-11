@@ -50,27 +50,27 @@ public class BookController {
 	}
 	
 	@RequestMapping(value = "book/tags/{tags}")
-	public List<Tag> findByTags(@PathVariable List<Tag> tags)
+	public List<Tag> findByTagsIn(@PathVariable List<Tag> tags)
 	{
-		return repo.findByTags(tags);
+		return repo.findByTagsIn(tags);
 	}
 	
 	@RequestMapping(value = "book/reservations/{reservations}")
-	public List<Reservation> findByReservations(@PathVariable List<Reservation> reservations)
+	public List<Reservation> findByReservationsIn(@PathVariable List<Reservation> reservations)
 	{
-		return repo.findByReservations(reservations);
+		return repo.findByReservationsIn(reservations);
 	}
 	
 	@RequestMapping(value = "book/bookcopies/{bookcopies}")
-	public List<BookCopy> findByBookCopies(@PathVariable List<BookCopy> bookcopies)
+	public List<BookCopy> findByBookcopiesIn(@PathVariable List<BookCopy> bookcopies)
 	{
-		return repo.findByBookCopies(bookcopies);
+		return repo.findByBookcopiesIn(bookcopies);
 	}
 	
 	@RequestMapping(value = "book/authors/{authors}")
-	public List<Author> findByAuthors(@PathVariable List<Author> authors)
+	public List<Author> findByAuthorsIn(@PathVariable List<Author> authors)
 	{
-		return repo.findByAuthors(authors);
+		return repo.findByAuthorsIn(authors);
 	}
 	
 	@RequestMapping(value = "book/create", method = RequestMethod.POST)
