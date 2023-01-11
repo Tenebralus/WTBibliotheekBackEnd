@@ -9,6 +9,8 @@ import javax.persistence.OneToMany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,13 +70,13 @@ public class BookCopyController {
 		return repo.findByLoansIn(loans);
 	}*/
 	
-	@RequestMapping(value = "bookcopy/create", method = RequestMethod.POST)
+	@PostMapping(value = "bookcopy/create")
 	public void createBookCopy(@RequestBody BookCopy bookcopy)
 	{
 		repo.save(bookcopy);
 	}
 	
-	@RequestMapping(value = "bookcopy/update/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "bookcopy/update/{id}")
 	public void updateBookCopy(@PathVariable long id, @RequestBody BookCopy bookcopy )
 	{
 		BookCopy foundBookCopy = findById(id);
@@ -85,10 +87,13 @@ public class BookCopyController {
 		repo.save(foundBookCopy);
 	}
 	
-	@RequestMapping(value = "bookopy/delete/{id}", method = RequestMethod.DELETE)
-	public void deleteUser(@PathVariable long id)
+	//not want to delete bookcopies, just edit them into archived
+	@PutMapping(value = "bookcopy/archive/{id}")
+	public void deleteBookCopy(@PathVariable long id)
 	{
-		repo.deleteById(id);
+		BookCopy foundBookCopy = findById(id);
+		foundBookCopy.setStatus("gearchiveerd");
+		repo.save(foundBookCopy);
 	}
 
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,14 +75,14 @@ public class BookController {
 		return repo.findByAuthorsIn(authors);
 	}
 	
-	@RequestMapping(value = "book/create", method = RequestMethod.POST)
+	@PostMapping(value = "book/create")
 	public void createBook(@RequestBody Book book)
 	{
 		repo.save(book);
 	}
 	
-	@RequestMapping(value = "book/update/{id}", method = RequestMethod.PUT)
-	public void updateBook(@PathVariable long id, @RequestBody Book book )
+	@PutMapping(value = "book/update/{id}")
+	public void updateBook(@PathVariable long id, @RequestBody Book book)
 	{
 		Book foundBook = findById(id);
 		foundBook.setTitle(book.getTitle());
@@ -92,9 +94,6 @@ public class BookController {
 		repo.save(foundBook);
 	}
 	
-	@RequestMapping(value = "book/delete/{id}", method = RequestMethod.DELETE)
-	public void deleteBook(@PathVariable long id)
-	{
-		repo.deleteById(id);
-	}
+	//not want to delete books, just edit bookcopies into archived
+
 }

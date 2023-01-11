@@ -5,7 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -89,13 +92,13 @@ public class UserController {
 		return repo.findByActive(active);
 	}
 	
-	@RequestMapping(value = "user/create", method = RequestMethod.POST)
+	@PostMapping(value = "user/create")
 	public void createUser(@RequestBody User user)
 	{
 		repo.save(user);
 	}
 	
-	@RequestMapping(value = "user/update/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "user/update/{id}")
 	public void updateUser(@PathVariable long id, @RequestBody User user )
 	{
 		User foundUser = findById(id);
@@ -112,7 +115,7 @@ public class UserController {
 		repo.save(foundUser);
 	}
 	
-	@RequestMapping(value = "user/delete/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "user/delete/{id}")
 	public void deleteUser(@PathVariable long id)
 	{
 		repo.deleteById(id);
