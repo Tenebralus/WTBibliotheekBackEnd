@@ -13,8 +13,8 @@ import nl.workingtalent.backend.Entities.Tag;
 public interface IBookRepository extends JpaRepository<Book, Long>{
 	List<Book> findByTitle(String title);
 	List<Book> findByIsbn(String isbn);
-	List<Tag> findByTags(List<Tag> tags);
-	List<Reservation> findByReservations(List<Reservation> reservations);
-	List<BookCopy> findByBookCopies(List<BookCopy> bookcopies);
-	List<Author> findByAuthors(List<Author> authors);
+	List<Tag> findByTagsIn(List<Tag> tags);
+	List<Reservation> findByReservationsIn(List<Reservation> reservations);
+	List<BookCopy> findByBookcopiesIn(List<BookCopy> bookcopies);
+	List<Author> findByAuthorsIn(List<Author> authors);
 }

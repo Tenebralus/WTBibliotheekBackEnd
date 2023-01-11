@@ -18,18 +18,6 @@ import nl.workingtalent.backend.Repositories.IUserRepository;
 @CrossOrigin(maxAge = 3600)
 public class UserController {
 	
-	// add create, update and delete [v]
-	// link with frontend [v]
-	// being able to login
-	
-	/*
-	 * van frontend krijg email + password
-	 * checken of combinatie goed is
-	 * checken of admin is
-	 */
-	// possibly add loans 
-	// roles(admin) find aswell [v]
-	
 	@Autowired
 	IUserRepository repo;
 	
