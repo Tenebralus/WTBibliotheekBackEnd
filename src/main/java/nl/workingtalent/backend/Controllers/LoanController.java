@@ -8,7 +8,10 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,13 +65,13 @@ public class LoanController {
 		return repo.findByUser(user);
 	}
 	
-	@RequestMapping(value = "loan/create", method = RequestMethod.POST)
+	@PostMapping(value = "loan/create")
 	public void createLoan(@RequestBody Loan loan)
 	{
 		repo.save(loan);
 	}
 	
-	@RequestMapping(value = "loan/update/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "loan/update/{id}")
 	public void updateLoan(@PathVariable long id, @RequestBody Loan loan )
 	{
 		Loan foundLoan = findById(id);
@@ -79,7 +82,7 @@ public class LoanController {
 		repo.save(foundLoan);
 	}
 	
-	@RequestMapping(value = "loan/delete/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "loan/delete/{id}")
 	public void deleteLoan(@PathVariable long id)
 	{
 		repo.deleteById(id);
