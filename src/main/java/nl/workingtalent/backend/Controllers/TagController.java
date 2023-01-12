@@ -1,7 +1,6 @@
 package nl.workingtalent.backend.Controllers;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.Tag;
 import nl.workingtalent.backend.Repositories.ITagRepository;
@@ -57,7 +55,7 @@ public class TagController {
 	}
 	
 	@PutMapping(value = "tag/update/{id}")
-	public void updateTag(@PathVariable long id, @RequestBody Tag tag )
+	public void updateTag(@PathVariable long id, @RequestBody Tag tag)
 	{
 		Tag foundTag = findById(id);
 		foundTag.setName(tag.getName());
