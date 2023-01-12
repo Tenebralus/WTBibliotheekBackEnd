@@ -4,6 +4,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import nl.workingtalent.backend.DTOs.BookCopyUpdateReturnDTO;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.BookCopy;
 import nl.workingtalent.backend.Entities.Loan;
 import nl.workingtalent.backend.Repositories.IBookCopyRepository;
+import nl.workingtalent.backend.Repositories.ILoanRepository;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -24,6 +29,9 @@ public class BookCopyController {
 	
 	@Autowired
 	IBookCopyRepository repo;
+	
+	@Autowired
+	ILoanRepository loanRepo;
 	
 	@RequestMapping(value = "bookcopy/all")
 	public List<BookCopy> findAllBookCopies()
@@ -84,12 +92,26 @@ public class BookCopyController {
 		repo.save(foundBookCopy);
 	}
 	
-	@PutMapping(value = "bookcopy/updatestatus/{id}")
-	public void updateBookCopyStatus(@PathVariable long id, @RequestBody String status)
+	@PutMapping(value = "bookcopy/update/returnbookcopy/{bookCopyId}/{loanId}")
+	public void updateBookCopyStatus(@PathVariable long bookCopyId, @PathVariable long loanId, @RequestBody String status)
 	{
-		BookCopy foundBookCopy = findById(id);
+		BookCopy foundBookCopy = findById(bookCopyId);
 		foundBookCopy.setStatus(status);
+		
+		List<Loan> loans = foundBookCopy.getLoans();
+		Loan loan = new Loan();
+		for(Loan tempLoan : loans)
+		{
+			if(tempLoan.getId() == loanId);
+			{
+				loan = tempLoan;
+				loan.setDateReturned(LocalDateTime.now());
+				break;
+			}
+		}
+			
 		repo.save(foundBookCopy);
+		loanRepo.save(loan);
 	}
 	
 	//not want to delete bookcopies, just edit them into archived

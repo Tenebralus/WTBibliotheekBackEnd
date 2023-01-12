@@ -8,8 +8,8 @@ import nl.workingtalent.backend.Entities.Author;
 //Deze class bevat alléén de gegevens die je nodig hebt voor je programma
 public class LoanDTO {
 	Long id;
-	
-	Long bookId;
+		
+	Long bookCopyId;
 	
 	String bookTitle;
 	
@@ -18,10 +18,6 @@ public class LoanDTO {
 	String bookIsbn;
 	
 	List<Author> authors;
-	
-	List<String> authorFirstNames;
-	
-	List<String> authorLastNames;
 	
 	String bookCopyStatus;
 	
@@ -39,12 +35,12 @@ public class LoanDTO {
 		this.id = id;
 	}
 
-	public Long getBookId() {
-		return bookId;
+	public Long getBookCopyId() {
+		return bookCopyId;
 	}
 
-	public void setBookId(Long bookId) {
-		this.bookId = bookId;
+	public void setBookCopyId(Long bookCopyId) {
+		this.bookCopyId = bookCopyId;
 	}
 
 	public String getBookTitle() {
@@ -77,22 +73,6 @@ public class LoanDTO {
 
 	public void setAuthors(List<Author> authors) {
 		this.authors = authors;
-	}
-
-	public List<String> getAuthorFirstNames() {
-		return authorFirstNames;
-	}
-
-	public void setAuthorFirstNames(List<String> authorFirstNames) {
-		this.authorFirstNames = authorFirstNames;
-	}
-
-	public List<String> getAuthorLastNames() {
-		return authorLastNames;
-	}
-
-	public void setAuthorLastNames(List<String> authorLastNames) {
-		this.authorLastNames = authorLastNames;
 	}
 
 	public String getBookCopyStatus() {

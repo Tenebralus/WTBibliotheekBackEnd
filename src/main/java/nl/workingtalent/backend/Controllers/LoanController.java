@@ -111,8 +111,10 @@ public class LoanController {
 		//Modelmapper probeert zelf uit te vinden welke gegevens van de 'echte' class in de DTO horen, maar als ie het niet snapt kan je handmatig 
 		//relaties aangeven met typeMap
 		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getId(), 
+					LoanDTO::setId);
 			mapper.map(src -> src.getBookCopy().getId(), 
-					LoanDTO::setBookTitle);
+					LoanDTO::setBookCopyId);
 			mapper.map(src -> src.getBookCopy().getBook().getTitle(), 
 					LoanDTO::setBookTitle);
 			mapper.map(src -> src.getBookCopy().getBookCopyNr(), 
