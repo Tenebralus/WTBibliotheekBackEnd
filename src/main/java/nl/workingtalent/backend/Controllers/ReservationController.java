@@ -6,6 +6,12 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.session.MapSession;
+import org.springframework.session.Session;
+import org.springframework.session.SessionRepository;
+import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,20 +27,23 @@ import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Entities.ReservationDTO;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IReservationRepository;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
+@EnableJdbcHttpSession
 @CrossOrigin(maxAge = 3600)
 public class ReservationController {
 	
 	@Autowired
 	private IReservationRepository repo;
-	
-	/*@Autowired
-	private IBookRepository bookRepo;
-	
-	@Autowired
-	private IUserRepository userRepo;*/
-	
+
+//	@Autowired
+//	SessionRepository<Session> sessionRepository;
+
 	@RequestMapping(value = "reservation/all")
 	public List<Reservation> findAllReservations()
 	{
@@ -60,10 +69,20 @@ public class ReservationController {
 	
 	//variations to create
 	@PostMapping("book/{bookId}/createreservation")
-	public void createReservationViaBook(@PathVariable(value = "bookId") Long bookId) {
+	public void createReservationViaBook(HttpServletRequest request, @PathVariable(value = "bookId") Long bookId) {
+//		MapSession session = (MapSession) sessionRepository.findById("10162170-a0e0-4634-99d5-75847d6886e8");
+//		String email = session.getAttribute("email");
+//		System.out.println(email);
+		String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+		System.out.println(sessionId);
+//		HttpSession session = request.getSession();
+//		System.out.println(session.getId());
+//		String email = (String) session.getAttribute("email");
+//		System.out.println(email);
 		Reservation reservation = new Reservation();
 		Book book = new Book();
 		book.setId(bookId);
+//		reservation.setUser(email);
 		reservation.setBook(book);
 		reservation.setDateReserved(LocalDateTime.now());
 		repo.save(reservation);

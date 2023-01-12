@@ -17,7 +17,7 @@ import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IUserRepository;
 
 @RestController
-@CrossOrigin(maxAge = 3600)
+@CrossOrigin(origins="*", maxAge = 3600)
 public class UserController {
 	
 	@Autowired

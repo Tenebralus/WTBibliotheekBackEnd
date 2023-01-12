@@ -45,13 +45,11 @@
     	<dependency>
     		<groupId>org.springframework.session</groupId>
     		<artifactId>spring-session-jdbc</artifactId>
-		</dependency>	
-		<!-- For simple login system
-		<dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		-->
+<!--		<dependency>-->
+<!--    		<groupId>org.springframework.boot</groupId>-->
+<!--    		<artifactId>spring-boot-starter-security</artifactId>-->
+<!--		</dependency>-->
 		<dependency>
     		<groupId>org.modelmapper</groupId>
     		<artifactId>modelmapper</artifactId>
