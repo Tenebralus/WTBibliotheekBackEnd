@@ -12,8 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+@JsonIdentityInfo(
+		   generator = ObjectIdGenerators.PropertyGenerator.class,
+		   property = "id")
 @Entity
 public class Book {
 	
@@ -35,7 +41,6 @@ public class Book {
 	private List<Reservation> reservations;
 	
 	@OneToMany(mappedBy="book")
-	@JsonIgnore
 	private List<BookCopy> bookcopies;
 
 	@ManyToMany

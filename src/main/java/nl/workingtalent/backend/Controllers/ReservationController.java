@@ -49,6 +49,7 @@ public class ReservationController {
 	}
 	
 	@GetMapping("/user/{userId}/reservations")
+
 	public List<Reservation> findByUserId(@PathVariable(value= "userId") Long userId) {
 		return repo.findByUserId(userId);
 	}
@@ -71,6 +72,7 @@ public class ReservationController {
 		repo.save(reservation);
 	}
 	
+
 	@PutMapping(value = "reservation/update/{id}")
 	public void updateReservation(@PathVariable long id, @RequestBody Reservation reservation) 
 	{
