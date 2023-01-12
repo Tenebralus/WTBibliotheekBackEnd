@@ -2,8 +2,12 @@ package nl.workingtalent.backend.Controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import nl.workingtalent.backend.DTOs.LoanDTO;
 import nl.workingtalent.backend.Entities.BookCopy;
 import nl.workingtalent.backend.Entities.Loan;
+import nl.workingtalent.backend.Entities.Reservation;
+import nl.workingtalent.backend.Entities.ReservationDTO;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.ILoanRepository;
 
@@ -83,5 +91,43 @@ public class LoanController {
 	public void deleteLoan(@PathVariable long id)
 	{
 		repo.deleteById(id);
+	}
+	
+	//DTO voorbeeld
+	@RequestMapping(value= "loan/dto")
+	public List<LoanDTO> findAllLoanDTOs() {
+		//Modelmapper is een package die DTOs makkelijker maakt
+		ModelMapper modelMapper = new ModelMapper();
+
+		//Modelmapper probeert zelf uit te vinden welke gegevens van de 'echte' class in de DTO horen, maar als ie het niet snapt kan je handmatig 
+		//relaties aangeven met typeMap
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getId(), 
+					LoanDTO::setBookTitle);
+			mapper.map(src -> src.getBookCopy().getBook().getTitle(), 
+					LoanDTO::setBookTitle);
+			mapper.map(src -> src.getBookCopy().getBookCopyNr(), 
+					LoanDTO::setBookCopyNr);
+			mapper.map(src -> src.getBookCopy().getBook().getIsbn(), 
+					LoanDTO::setBookIsbn);
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(), 
+					LoanDTO::setAuthors);
+			mapper.map(src -> src.getBookCopy().getStatus(), 
+					LoanDTO::setBookCopyStatus);
+			mapper.map(src -> src.getUser().getFirstName(), 
+					LoanDTO::setUserFirstName);
+			mapper.map(src -> src.getUser().getLastName(), 
+					LoanDTO::setUserLastName);
+			mapper.map(src -> src.getDateLoaned(),
+					LoanDTO::setDateLoaned);
+		});
+
+		//Dit is nodig om lijsten van objecten te DTOen
+		List<LoanDTO> loans = repo.findAll()
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+
+		return loans;
 	}
 }
