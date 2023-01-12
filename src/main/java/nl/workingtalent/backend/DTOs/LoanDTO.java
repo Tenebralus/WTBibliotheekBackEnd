@@ -30,6 +30,8 @@ public class LoanDTO {
 	String userLastName;
 	
 	LocalDateTime dateLoaned;
+	
+	LocalDateTime dateReturned;
 
 	public Long getId() {
 		return id;
@@ -125,6 +127,14 @@ public class LoanDTO {
 
 	public void setDateLoaned(LocalDateTime dateLoaned) {
 		this.dateLoaned = dateLoaned;
+	}
+
+	public LocalDateTime getDateReturned() {
+		return dateReturned;
+	}
+
+	public void setDateReturned(LocalDateTime dateReturned) {
+		this.dateReturned = dateReturned;
 	}
 	
 	
