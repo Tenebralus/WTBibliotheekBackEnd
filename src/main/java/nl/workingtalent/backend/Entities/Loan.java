@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Loan {
@@ -21,7 +22,7 @@ public class Loan {
 	@Column(nullable=false)
 	private LocalDateTime dateLoaned;
 	
-	@Column
+	@Column(nullable=true)
 	private LocalDateTime dateReturned;
 	
 	@ManyToOne

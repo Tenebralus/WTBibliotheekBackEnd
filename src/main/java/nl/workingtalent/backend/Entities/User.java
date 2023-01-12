@@ -13,10 +13,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class, 
+		property = "id")
 @Entity
-public class User implements Serializable{
+public class User{
 		
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +53,6 @@ public class User implements Serializable{
 	private boolean admin;
 	
 	@OneToMany(mappedBy = "user")
-	@JsonIgnore
 	private List<Loan> loans;
 	
 	@OneToMany(mappedBy = "user")
