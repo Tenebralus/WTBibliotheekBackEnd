@@ -95,7 +95,7 @@ public class ReservationController {
 	}
 	
 	//DTO voorbeeld
-	@RequestMapping(value= "dtotest")
+	@RequestMapping(value= "reservation/dto")
 	public List<ReservationDTO> findAllReservationDTOs() {
 		//Modelmapper is een package die DTOs makkelijker maakt
 		ModelMapper modelMapper = new ModelMapper();
