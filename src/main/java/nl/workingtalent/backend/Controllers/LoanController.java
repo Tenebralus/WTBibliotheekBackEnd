@@ -138,6 +138,7 @@ public class LoanController {
 				.collect(Collectors.toList());
 
 		return loans;
+	}
 
 	@PostMapping(value = "loan/{reservationId}/{copyId}/create")
 	public void createLoanViaBookcopy(@PathVariable long reservationId, @PathVariable long copyId) {
