@@ -1,15 +1,18 @@
 package nl.workingtalent.backend.Controllers;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IUserRepository;
@@ -20,6 +23,20 @@ public class UserController {
 	
 	@Autowired
 	IUserRepository repo;
+
+//	@GetMapping("/login")
+//	public ResponseEntity<Resource> getLoginPage() throws IOException {
+//		FileSystemResource file = new FileSystemResource("/Users/basdo/Desktop/Working Talent/" +
+//				"Bibliotheek/WTBibliotheekFrontEnd/login.html");
+//		return ResponseEntity.ok()
+//				.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML_VALUE)
+//				.body(new InputStreamResource(file.getInputStream()));
+//	}
+//
+//	@GetMapping(value = "/index")
+//	public String listUsers() {
+//		return "file:/Users/basdo/Desktop/Working%20Talent/Bibliotheek/WTBibliotheekFrontEnd/admin/index.html";
+//	}
 	
 	@RequestMapping(value = "user/all")
 	public List<User> findAllUsers()
@@ -45,12 +62,12 @@ public class UserController {
 		return repo.findByLastName(lastName);
 	}
 	
-	@RequestMapping(value = "user/emailaddress/{emailAddress}")
-	public List<User> findByEmailAddress(@PathVariable String emailAddress)
-	{
-		return repo.findByEmailAddress(emailAddress);
-	}
-	
+//	@RequestMapping(value = "user/emailaddress/{emailAddress}")
+//	public List<User> findByEmailAddress(@PathVariable String emailAddress)
+//	{
+//		return repo.findByEmailAddress(emailAddress);
+//	}
+//
 	@RequestMapping(value = "user/password/{password}")
 	//We do not concern with privacy right now
 	//we need this to compare email with password for login
