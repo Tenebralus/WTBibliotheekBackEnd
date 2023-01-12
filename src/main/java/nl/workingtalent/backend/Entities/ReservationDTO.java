@@ -9,6 +9,9 @@ public class ReservationDTO {
 	
 	String bookTitle;
 	
+	Long bookId;
+	
+	
 	String firstName;
 	
 	String lastName;
@@ -17,6 +20,14 @@ public class ReservationDTO {
 	
 	List<BookCopy> bookcopies;
 	
+	public Long getBookId() {
+		return bookId;
+	}
+
+	public void setBookId(Long bookId) {
+		this.bookId = bookId;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
