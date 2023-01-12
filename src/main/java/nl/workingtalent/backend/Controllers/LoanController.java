@@ -23,9 +23,12 @@ import nl.workingtalent.backend.DTOs.LoanDTO;
 import nl.workingtalent.backend.Entities.BookCopy;
 import nl.workingtalent.backend.Entities.Loan;
 import nl.workingtalent.backend.Entities.Reservation;
-import nl.workingtalent.backend.Entities.ReservationDTO;
+
 import nl.workingtalent.backend.Entities.User;
+import nl.workingtalent.backend.Repositories.IBookCopyRepository;
+import nl.workingtalent.backend.Repositories.IBookRepository;
 import nl.workingtalent.backend.Repositories.ILoanRepository;
+import nl.workingtalent.backend.Repositories.IReservationRepository;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -33,6 +36,12 @@ public class LoanController {
 	
 	@Autowired
 	ILoanRepository repo;
+	
+	@Autowired
+	IReservationRepository reservationRepo;
+	
+	@Autowired
+	IBookCopyRepository bookCopyRepo;
 	
 	@RequestMapping(value = "loan/all")
 	public List<Loan> findAllLoans()
@@ -129,5 +138,20 @@ public class LoanController {
 				.collect(Collectors.toList());
 
 		return loans;
+
+	@PostMapping(value = "loan/{reservationId}/{copyId}/create")
+	public void createLoanViaBookcopy(@PathVariable long reservationId, @PathVariable long copyId) {
+		Loan loan = new Loan();
+		BookCopy bookCopy = bookCopyRepo.findById(copyId).get();
+		Reservation reservation = reservationRepo.findById(reservationId).get();
+		
+		loan.setBookCopy(bookCopy);
+		loan.setDateLoaned(LocalDateTime.now());
+		loan.setUser(reservation.getUser());
+		
+		repo.save(loan);
+		reservationRepo.deleteById(reservation.getId());
+		bookCopy.setStatus("loaned");
+		bookCopyRepo.save(bookCopy);
 	}
 }

@@ -22,7 +22,7 @@ public class Loan {
 	@Column(nullable=false)
 	private LocalDateTime dateLoaned;
 	
-	@Column(nullable=true)
+	@Column
 	private LocalDateTime dateReturned;
 	
 	@ManyToOne
