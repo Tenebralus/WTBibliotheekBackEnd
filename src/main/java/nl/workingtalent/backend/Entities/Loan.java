@@ -17,7 +17,7 @@ public class Loan {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	@Column(nullable=false)
 	private LocalDateTime dateLoaned;
@@ -31,11 +31,11 @@ public class Loan {
 	@ManyToOne
 	private User user;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
