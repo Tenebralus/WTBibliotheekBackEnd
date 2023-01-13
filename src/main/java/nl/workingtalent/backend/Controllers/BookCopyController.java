@@ -98,17 +98,9 @@ public class BookCopyController {
 		BookCopy foundBookCopy = findById(bookCopyId);
 		foundBookCopy.setStatus(status);
 		
-		List<Loan> loans = foundBookCopy.getLoans();
-		Loan loan = new Loan();
-		for(Loan tempLoan : loans)
-		{
-			if(tempLoan.getId() == loanId);
-			{
-				loan = tempLoan;
-				loan.setDateReturned(LocalDateTime.now());
-				break;
-			}
-		}
+		Loan loan = loanRepo.findById(loanId).get();
+		
+		loan.setDateReturned(LocalDateTime.now());
 			
 		repo.save(foundBookCopy);
 		loanRepo.save(loan);
