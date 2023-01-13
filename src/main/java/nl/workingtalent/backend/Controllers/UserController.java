@@ -114,9 +114,15 @@ public class UserController {
 		repo.save(foundUser);
 	}
 	
-	@DeleteMapping(value = "user/delete/{id}")
-	public void deleteUser(@PathVariable long id)
+	@DeleteMapping(value = "user/anonymize/{id}")
+	public void anonymizeUser(@PathVariable long id, @RequestBody User user)
 	{
-		repo.deleteById(id);
+		User foundUser = findById(id);
+		foundUser.setFirstName("anon");
+		foundUser.setLastName("anon");
+		foundUser.setEmailAddress("anon@wt.nl");
+		foundUser.setDateAccountDeleted(LocalDateTime.now());
+		foundUser.setActive(false);
+		repo.save(foundUser);
 	}
 }
