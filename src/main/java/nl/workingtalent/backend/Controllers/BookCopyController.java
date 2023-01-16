@@ -6,6 +6,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 
+
+import nl.workingtalent.backend.Entities.Reservation;
+import nl.workingtalent.backend.Repositories.IBookRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,6 +37,9 @@ public class BookCopyController {
 	
 	@Autowired
 	ILoanRepository loanRepo;
+
+	@Autowired
+	IBookRepository bookRepo;
 	
 	@RequestMapping(value = "bookcopy/all")
 	public List<BookCopy> findAllBookCopies()
@@ -81,6 +87,20 @@ public class BookCopyController {
 	public void createBookCopy(@RequestBody BookCopy bookcopy)
 	{
 		repo.save(bookcopy);
+	}
+
+	@PostMapping(value = "book/{bookId}/createbookcopy")
+	public void createBookCopyViaBook(@PathVariable(value = "bookId") Long bookId)
+	{
+		BookCopy bookCopy = new BookCopy();
+		Book book = bookRepo.findById(bookId).get();
+		List<BookCopy> copies = book.getBookcopies();
+		int size = copies.size();
+		// Voeg een exemplaar toe op basis van de bestaande exemplaren
+		bookCopy.setBookCopyNr(size + 1);
+		bookCopy.setBook(book);
+		bookCopy.setStatus("available");
+		repo.save(bookCopy);
 	}
 	
 	@PutMapping(value = "bookcopy/update/{id}")
