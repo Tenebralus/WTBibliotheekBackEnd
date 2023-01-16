@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import nl.workingtalent.backend.DTOs.ReservationDTO;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.Reservation;
-import nl.workingtalent.backend.Entities.ReservationDTO;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IReservationRepository;
 
