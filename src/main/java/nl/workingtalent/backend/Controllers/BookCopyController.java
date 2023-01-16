@@ -1,14 +1,16 @@
 package nl.workingtalent.backend.Controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 
-
 import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Repositories.IBookRepository;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.DTOs.BookCopyDetailsDTO;
 import nl.workingtalent.backend.DTOs.BookCopyUpdateReturnDTO;
+import nl.workingtalent.backend.DTOs.BookDetailsDTO;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.BookCopy;
 import nl.workingtalent.backend.Entities.Loan;
@@ -66,7 +69,7 @@ public class BookCopyController {
 	}
 	
 	@RequestMapping(value = "bookcopy/book/{book}")
-	public BookCopy findByBook(@PathVariable Book book)
+	public List<BookCopy> findByBook(@PathVariable Book book)
 	{
 		return repo.findByBook(book);
 	}
@@ -136,7 +139,7 @@ public class BookCopyController {
 		foundBookCopy.setStatus("archived");
 		repo.save(foundBookCopy);
 	}
-
+	
 	@RequestMapping(value = "bookcopy/details/{id}")
 	public BookCopyDetailsDTO findBookCopyDetailsDTOById(@PathVariable long id) {
 		ModelMapper modelMapper = new ModelMapper();
