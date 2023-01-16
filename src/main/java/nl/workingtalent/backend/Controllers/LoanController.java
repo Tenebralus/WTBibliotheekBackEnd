@@ -141,6 +141,21 @@ public class LoanController {
 
 		return loans;
 	}
+	
+	@RequestMapping(value="loan/dto/bookcopy/{bookCopyId}")
+	public List<LoanDTO> findLoanDTOsByBookCopyId(@PathVariable Long bookCopyId) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		BookCopy bookCopy = bookCopyRepo.findById(bookCopyId).get();
+		List<Loan> allLoans = repo.findByBookCopy(bookCopy);
+		
+		List<LoanDTO> loans = allLoans
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+		
+		return loans;
+	}
 
 	@PostMapping(value = "loan/{reservationId}/{copyId}/create")
 	public void createLoanViaBookcopy(@PathVariable long reservationId, @PathVariable long copyId) {
