@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"firstName", "lastName" }) )
 public class Author {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

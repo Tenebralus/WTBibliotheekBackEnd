@@ -1,7 +1,9 @@
-package nl.workingtalent.backend.Entities;
+package nl.workingtalent.backend.DTOs;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import nl.workingtalent.backend.Entities.BookCopy;
 
 //Deze class bevat alléén de gegevens die je nodig hebt voor je programma
 public class ReservationDTO {
