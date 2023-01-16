@@ -1,24 +1,26 @@
-package nl.workingtalent.backend.Entities;
+package nl.workingtalent.backend.DTOs;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import nl.workingtalent.backend.Entities.BookCopy;
+
 //Deze class bevat alléén de gegevens die je nodig hebt voor je programma
 public class ReservationDTO {
-	Long id;
+	private Long id;
 	
-	String bookTitle;
+	private String bookTitle;
 	
-	Long bookId;
+	private Long bookId;
 	
 	
-	String firstName;
+	private String firstName;
 	
-	String lastName;
+	private String lastName;
 	
-	LocalDateTime reservationDate;
+	private LocalDateTime reservationDate;
 	
-	List<BookCopy> bookcopies;
+	private List<BookCopy> bookcopies;
 	
 	public Long getBookId() {
 		return bookId;

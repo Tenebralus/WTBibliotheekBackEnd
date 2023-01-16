@@ -6,8 +6,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 
+
 import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Repositories.IBookRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import nl.workingtalent.backend.DTOs.BookCopyDetailsDTO;
 import nl.workingtalent.backend.DTOs.BookCopyUpdateReturnDTO;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.BookCopy;
@@ -134,4 +137,26 @@ public class BookCopyController {
 		repo.save(foundBookCopy);
 	}
 
+	@RequestMapping(value = "bookcopy/details/{id}")
+	public BookCopyDetailsDTO findBookCopyDetailsDTOById(@PathVariable long id) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(BookCopy.class, BookCopyDetailsDTO.class);
+		
+		BookCopy bookCopy = repo.findById(id).get();
+		
+		List<Loan> allLoans = loanRepo.findByBookCopy(bookCopy);
+		int loanCount = allLoans.size();
+		
+		BookCopyDetailsDTO bookCopyDTO = modelMapper.map(bookCopy, BookCopyDetailsDTO.class);
+		bookCopyDTO.setTimesLoaned(loanCount);
+		for (Loan element : allLoans) {
+			if (element.getDateReturned() == null) {
+				bookCopyDTO.setCurrentLoan(element);
+			}
+		}
+		
+		return bookCopyDTO;
+		
+	}
 }
