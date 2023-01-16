@@ -2,12 +2,12 @@ package nl.workingtalent.backend.Controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
-
+import nl.workingtalent.backend.Entities.Reservation;
+import nl.workingtalent.backend.Repositories.IBookRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import nl.workingtalent.backend.DTOs.BookCopyDTO;
+import nl.workingtalent.backend.DTOs.BookCopyDetailsDTO;
 import nl.workingtalent.backend.DTOs.BookCopyUpdateReturnDTO;
 import nl.workingtalent.backend.DTOs.ReservationDTO;
 import nl.workingtalent.backend.Entities.Author;
@@ -41,6 +40,9 @@ public class BookCopyController {
 	
 	@Autowired
 	ILoanRepository loanRepo;
+
+	@Autowired
+	IBookRepository bookRepo;
 	
 	@RequestMapping(value = "bookcopy/all")
 	public List<BookCopy> findAllBookCopies()
@@ -89,6 +91,20 @@ public class BookCopyController {
 	{
 		repo.save(bookcopy);
 	}
+
+	@PostMapping(value = "book/{bookId}/createbookcopy")
+	public void createBookCopyViaBook(@PathVariable(value = "bookId") Long bookId)
+	{
+		BookCopy bookCopy = new BookCopy();
+		Book book = bookRepo.findById(bookId).get();
+		List<BookCopy> copies = book.getBookcopies();
+		int size = copies.size();
+		// Voeg een exemplaar toe op basis van de bestaande exemplaren
+		bookCopy.setBookCopyNr(size + 1);
+		bookCopy.setBook(book);
+		bookCopy.setStatus("available");
+		repo.save(bookCopy);
+	}
 	
 	@PutMapping(value = "bookcopy/update/{id}")
 	public void updateBookCopy(@PathVariable long id, @RequestBody BookCopy bookcopy )
@@ -127,8 +143,8 @@ public class BookCopyController {
 	
 	
 	
-	
-	//DTO voorbeeld
+		/*
+		//DTO voorbeeld
 		@RequestMapping(value= "bookcopy/dto")
 		public List<BookCopyDTO> findAllBookCopyDTOs() {
 			//Modelmapper is een package die DTOs makkelijker maakt
@@ -164,6 +180,28 @@ public class BookCopyController {
 					.collect(Collectors.toList());
 			
 			 return bookcopies;
-		}
+		}*/
 
+	@RequestMapping(value = "bookcopy/details/{id}")
+	public BookCopyDetailsDTO findBookCopyDetailsDTOById(@PathVariable long id) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(BookCopy.class, BookCopyDetailsDTO.class);
+		
+		BookCopy bookCopy = repo.findById(id).get();
+		
+		List<Loan> allLoans = loanRepo.findByBookCopy(bookCopy);
+		int loanCount = allLoans.size();
+		
+		BookCopyDetailsDTO bookCopyDTO = modelMapper.map(bookCopy, BookCopyDetailsDTO.class);
+		bookCopyDTO.setTimesLoaned(loanCount);
+		for (Loan element : allLoans) {
+			if (element.getDateReturned() == null) {
+				bookCopyDTO.setCurrentLoan(element);
+			}
+		}
+		
+		return bookCopyDTO;
+		
+	}
 }
