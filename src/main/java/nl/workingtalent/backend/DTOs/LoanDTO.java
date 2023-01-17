@@ -7,27 +7,27 @@ import nl.workingtalent.backend.Entities.Author;
 
 //Deze class bevat alléén de gegevens die je nodig hebt voor je programma
 public class LoanDTO {
-	Long id;
+	private Long id;
 		
-	Long bookCopyId;
+	private Long bookCopyId;
 	
-	String bookTitle;
+	private String bookTitle;
 	
-	int bookCopyNr;
+	private int bookCopyNr;
 	
-	String bookIsbn;
+	private String bookIsbn;
 	
-	List<Author> authors;
+	private List<Author> authors;
 	
-	String bookCopyStatus;
+	private String bookCopyStatus;
 	
-	String userFirstName;
+	private String userFirstName;
 	
-	String userLastName;
+	private String userLastName;
 	
-	LocalDateTime dateLoaned;
+	private LocalDateTime dateLoaned;
 	
-	LocalDateTime dateReturned;
+	private LocalDateTime dateReturned;
 
 	public Long getId() {
 		return id;
