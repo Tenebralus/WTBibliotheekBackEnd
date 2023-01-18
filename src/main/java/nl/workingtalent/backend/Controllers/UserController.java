@@ -29,6 +29,15 @@ public class UserController {
 		return repo.findAll();
 	}
 	
+	@RequestMapping(value = "user/search/")
+	public List<User> searchAllUsers() {
+		return repo.findAll();
+	}
+	@RequestMapping(value = "user/search/{keyword}")
+	public List<User> searchAllUsers(@PathVariable String keyword) {
+		return repo.search(keyword);
+	}
+	
 	@RequestMapping(value = "user/id/{id}")
 	public User findById(@PathVariable long id)
 	{

@@ -49,6 +49,28 @@ public class LoanController {
 		return repo.findAll();
 	}
 	
+	@RequestMapping(value = "loan/search/")
+	public List<LoanDTO> searchAllLoans()
+	{
+		return findAllLoanDTOs();
+	}
+	@RequestMapping(value = "loan/search/{keyword}")
+	public List<LoanDTO> searchAllLoans(@PathVariable String keyword) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(), 
+					LoanDTO::setAuthors);
+		});
+		
+		List<LoanDTO> loans = repo.search(keyword)
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+
+		return loans;
+	}
+	
 	@RequestMapping(value = "loan/id/{id}")
 	public Loan findById(@PathVariable long id)
 	{
