@@ -42,6 +42,31 @@ public class ReservationController {
 		return repo.findAll();
 	}
 	
+	@RequestMapping(value = "reservation/search/")
+	public List<ReservationDTO> searchAllReservations() {
+		return findAllReservationDTOs();
+	}
+	@RequestMapping(value = "reservation/search/{keyword}")
+	public List<ReservationDTO> searchAllReservations(@PathVariable String keyword) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(Reservation.class, ReservationDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getUser().getFirstName(), 
+					ReservationDTO::setFirstName);
+			mapper.map(src -> src.getUser().getLastName(), 
+					ReservationDTO::setLastName);
+			mapper.map(src -> src.getBook().getBookcopies(), 
+					ReservationDTO::setBookcopies);
+		});
+		
+		List<ReservationDTO> reservations = repo.search(keyword)
+				.stream()
+				.map(reserv -> modelMapper.map(reserv, ReservationDTO.class))
+				.collect(Collectors.toList());
+		
+		return reservations;
+	}
+	
 	@RequestMapping(value = "reservation/id/{id}")
 	public Reservation findById(@PathVariable long id)
 	{

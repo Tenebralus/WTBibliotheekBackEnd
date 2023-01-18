@@ -3,7 +3,7 @@ package nl.workingtalent.backend.DTOs;
 import nl.workingtalent.backend.Entities.Loan;
 
 public class BookCopyDetailsDTO {
-	private Long id;
+	private Long id;//=bookcopyid
 	
 	private String bookTitle;
 	
