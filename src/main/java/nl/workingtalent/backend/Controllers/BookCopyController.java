@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import nl.workingtalent.backend.DTOs.BookCopyDTO;
 import nl.workingtalent.backend.DTOs.BookCopyDetailsDTO;
 import nl.workingtalent.backend.DTOs.BookCopyUpdateReturnDTO;
+import nl.workingtalent.backend.DTOs.LoanDTO;
 import nl.workingtalent.backend.DTOs.ReservationDTO;
 import nl.workingtalent.backend.Entities.Author;
 import nl.workingtalent.backend.Entities.Book;
@@ -136,7 +137,6 @@ public class BookCopyController {
 	public void archiveBookCopy(@PathVariable long id)
 	{
 		BookCopy foundBookCopy = findById(id);
-		
 		if (foundBookCopy.getStatus().equals("archived")) {
 			foundBookCopy.setStatus("available");
 		} else {
@@ -146,6 +146,24 @@ public class BookCopyController {
 	}
 	
 	
+	@RequestMapping(value="bookcopy/details/all")
+	List <BookCopyDTO> findAllBookCopyDTOs(){
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(BookCopy.class,BookCopyDTO.class).addMappings(mapper->{
+			mapper.map(src->src.getBook().getAuthors(), BookCopyDTO::setAuthors);
+			//mapper.map(src->src.getLoans().getUser(), BookCopyDTO::setAuthors);
+			//users autors en datums
+		});
+		
+		
+		
+		List<BookCopyDTO> bookDTOs = repo.findAll()
+				.stream()
+				.map(copy -> modelMapper.map(copy, BookCopyDTO.class))
+				.collect(Collectors.toList());
+		return bookDTOs;
+	}
 	
 	
 		/*
@@ -155,28 +173,6 @@ public class BookCopyController {
 			//Modelmapper is een package die DTOs makkelijker maakt
 			ModelMapper modelMapper = new ModelMapper();
 			
-			//Modelmapper probeert zelf uit te vinden welke gegevens van de 'echte' class in de DTO horen, maar als ie het niet snapt kan je handmatig 
-			//relaties aangeven met typeMap
-			modelMapper.typeMap(BookCopy.class, BookCopyDTO.class).addMappings(mapper -> {
-				mapper.map(src -> src.getUser().getFirstName(), 
-						BookCopyDTO::setFirstName);
-				mapper.map(src -> src.getUser().getLastName(), 
-						BookCopyDTO::setLastName);
-				mapper.map(src -> src.getBook().getBookcopies(), 
-						BookCopyDTO::setBookcopies);
-				mapper.map(src -> src.getBook().getAuthors(), 
-						BookCopyDTO::setAuthors);
-				mapper.map(src -> src.getBook().getIsbn(), 
-						BookCopyDTO::setIsbn);
-				mapper.map(src -> src.getBook().getTitle(), 
-						BookCopyDTO::setTitle);
-				mapper.map(src -> src.getBook().getBookCopyNr(), 
-						BookCopyDTO::setBookCopyNr);
-				mapper.map(src -> src.getBook().getDateLoaned(), 
-						BookCopyDTO::setDateLoaned);
-				mapper.map(src -> src.getBook().getDateReturned(), 
-						BookCopyDTO::setDateReturned);
-			});
 			
 			//Dit is nodig om lijsten van objecten te DTOen
 			List<BookCopyDTO> bookcopies = repo.findAll()
@@ -209,4 +205,7 @@ public class BookCopyController {
 		return bookCopyDTO;
 		
 	}
+	
+
+
 }
