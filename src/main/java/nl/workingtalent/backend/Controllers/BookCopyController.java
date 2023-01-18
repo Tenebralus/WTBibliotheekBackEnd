@@ -145,7 +145,6 @@ public class BookCopyController {
 		repo.save(foundBookCopy);
 	}
 	
-	
 	@RequestMapping(value="bookcopy/details/all")
 	List <BookCopyDTO> findAllBookCopyDTOs(){
 		ModelMapper modelMapper = new ModelMapper();
@@ -156,32 +155,12 @@ public class BookCopyController {
 			//users autors en datums
 		});
 		
-		
-		
 		List<BookCopyDTO> bookDTOs = repo.findAll()
 				.stream()
 				.map(copy -> modelMapper.map(copy, BookCopyDTO.class))
 				.collect(Collectors.toList());
 		return bookDTOs;
 	}
-	
-	
-		/*
-		//DTO voorbeeld
-		@RequestMapping(value= "bookcopy/dto")
-		public List<BookCopyDTO> findAllBookCopyDTOs() {
-			//Modelmapper is een package die DTOs makkelijker maakt
-			ModelMapper modelMapper = new ModelMapper();
-			
-			
-			//Dit is nodig om lijsten van objecten te DTOen
-			List<BookCopyDTO> bookcopies = repo.findAll()
-					.stream()
-					.map(bookcop -> modelMapper.map(bookcop, BookCopyDTO.class))
-					.collect(Collectors.toList());
-			
-			 return bookcopies;
-		}*/
 
 	@RequestMapping(value = "bookcopy/details/{id}")
 	public BookCopyDetailsDTO findBookCopyDetailsDTOById(@PathVariable long id) {
