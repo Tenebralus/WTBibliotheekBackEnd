@@ -1,6 +1,7 @@
 package nl.workingtalent.backend.Controllers;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.DTOs.LoanDTO;
+import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.BookCopy;
 import nl.workingtalent.backend.Entities.Loan;
 import nl.workingtalent.backend.Entities.Reservation;
@@ -39,6 +41,9 @@ public class LoanController {
 	
 	@Autowired
 	IReservationRepository reservationRepo;
+	
+	@Autowired
+	IBookRepository bookRepo;
 	
 	@Autowired
 	IBookCopyRepository bookCopyRepo;
@@ -140,6 +145,31 @@ public class LoanController {
 				.collect(Collectors.toList());
 
 		return loans;
+	}
+	
+	@RequestMapping(value="loan/dto/book/{bookId}")
+	public List<LoanDTO> findLoanDTOsByBookId(@PathVariable Long bookId) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		Book book = bookRepo.findById(bookId).get();
+		List<LoanDTO> loansDtos = new ArrayList<LoanDTO>();
+		for(BookCopy bookCopy : book.getBookcopies())
+		{
+			List<Loan> allLoans = repo.findByBookCopy(bookCopy);
+			
+			int lastIndex = loansDtos.size()-1;
+			if(lastIndex < 0)
+			{
+				lastIndex = 0;
+			}
+			loansDtos.addAll(lastIndex, allLoans
+					.stream()
+					.map(loan -> modelMapper.map(loan, LoanDTO.class))
+					.collect(Collectors.toList()));
+					
+		}
+		
+		return loansDtos;
 	}
 	
 	@RequestMapping(value="loan/dto/bookcopy/{bookCopyId}")
