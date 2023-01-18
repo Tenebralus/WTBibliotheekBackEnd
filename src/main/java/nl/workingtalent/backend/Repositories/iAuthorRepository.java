@@ -2,6 +2,7 @@ package nl.workingtalent.backend.Repositories;
 
 import java.util.List;
 
+import nl.workingtalent.backend.Entities.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import nl.workingtalent.backend.Entities.Author;

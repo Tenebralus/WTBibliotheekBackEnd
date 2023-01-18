@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import nl.workingtalent.backend.Entities.User;
 
@@ -17,4 +18,8 @@ public interface IUserRepository extends JpaRepository<User, Long>{
 	List<User> findByAdmin(boolean admin);
 	List<User> findByPassword(String password);
 	User findByEmailAddressAndPassword(String emailAddress, String password);
+	
+	@Query("SELECT DISTINCT u FROM User u "
+			+ "WHERE CONCAT(u.firstName, ' ', u.lastName, ' ', u.emailAddress) LIKE %?1%")
+	public List<User> search(String keyword);
 }
