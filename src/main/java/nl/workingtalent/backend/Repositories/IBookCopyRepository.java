@@ -12,7 +12,7 @@ import nl.workingtalent.backend.Entities.Loan;
 public interface IBookCopyRepository extends JpaRepository<BookCopy, Long>{
 	BookCopy findByBookCopyNr(int bookCopyNr);
 	BookCopy findByStatus(String status);
-	BookCopy findByBook(Book book);
+	List<BookCopy> findByBook(Book book);
 	BookCopy findByLoans(Loan loans);
 	BookCopy findByLoansIn(List<Loan> loans);
 	
