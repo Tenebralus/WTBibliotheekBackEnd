@@ -3,6 +3,8 @@ package nl.workingtalent.backend.Controllers;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ManyToMany;
+
+import nl.workingtalent.backend.Repositories.IBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +26,10 @@ public class AuthorController {
 
 	@Autowired
 	private iAuthorRepository repo;
-	
+
+	@Autowired
+	private IBookRepository bookRepo;
+
 	@RequestMapping(value = "author/all")
 	public List<Author> findAllAuthors()
 	{
@@ -64,6 +69,20 @@ public class AuthorController {
 		foundAuthor.setBooks(author.getBooks());
 		repo.save(foundAuthor);
 	}
+
+//	@PutMapping(value = "author/update/book/{bookId}")
+//	public void updateAuthorByBook(@PathVariable long bookId, @RequestBody List<Author> newAuthors)
+//	{
+//		Book book = bookRepo.findById(bookId).get();
+//		List<Author> authors = book.getAuthors();
+//		System.out.println(newAuthors.get(1));
+////		System.out.println(authors.get(1));
+////		Author foundAuthor = findById(id);
+////		foundAuthor.setFirstName(author.getFirstName());
+////		foundAuthor.setLastName(author.getLastName());
+////		foundAuthor.setBooks(author.getBooks());
+////		repo.save(foundAuthor);
+//	}
 	
 	@DeleteMapping(value = "author/delete/{id}")
 	public void deleteAuthor(@PathVariable long id)
