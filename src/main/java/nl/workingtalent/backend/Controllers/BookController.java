@@ -53,6 +53,15 @@ public class BookController {
 	{
 		return repo.findById(id).get();
 	}
+
+	@RequestMapping(value = "book/search/")
+    public List<Book> searchAllBooks() {
+        return repo.findAll();
+    }
+    @RequestMapping(value = "book/search/{keyword}")
+    public List<Book> searchAllBooks(@PathVariable String keyword) {
+    		return repo.search(keyword);
+    }
 	
 	@RequestMapping(value = "book/title/{title}")
 	public List<Book> findByTitle(@PathVariable String title)
@@ -143,8 +152,4 @@ public class BookController {
 		
 		return bookDTO;
 	}
-
-	
-	//not want to delete books, just edit bookcopies into archived
-
 }
