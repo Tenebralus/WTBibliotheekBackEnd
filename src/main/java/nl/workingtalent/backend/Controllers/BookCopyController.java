@@ -137,11 +137,10 @@ public class BookCopyController {
 	public void archiveBookCopy(@PathVariable long id)
 	{
 		BookCopy foundBookCopy = findById(id);
-		System.out.println(foundBookCopy.getStatus());
-		if (!foundBookCopy.getStatus().equals("archived")) {
-			foundBookCopy.setStatus("archived");
-		} else {
+		if (foundBookCopy.getStatus().equals("archived")) {
 			foundBookCopy.setStatus("available");
+		} else {
+			foundBookCopy.setStatus("archived");
 		}
 		repo.save(foundBookCopy);
 	}
