@@ -45,39 +45,6 @@ public class BookController {
     @Autowired
     private ITagRepository tagRepo;
 
-    @PutMapping(value = "book/update/{id}")
-    public void updateBook(@PathVariable long id, @RequestBody Book book) {
-        Book foundBook = findById(id);
-        List<Author> authors = foundBook.getAuthors();
-        System.out.println(authors);
-        foundBook.setTitle(book.getTitle());
-        foundBook.setIsbn(book.getIsbn());
-//        foundBook.setTags(book.getTags());
-//        foundBook.setReservations(book.getReservations());
-//        foundBook.setBookcopies(book.getBookcopies());
-//        foundBook.setAuthors(book.getAuthors());
-        repo.save(foundBook);
-    }
-
-    @PutMapping(value = "book/delete/author/{bookId}/{authorId}")
-    public void deleteAuthorFromBook(@PathVariable long bookId, @PathVariable long authorId) {
-        Book foundBook = findById(bookId);
-        List<Author> authors = foundBook.getAuthors();
-        Author author = authorRepo.findById(authorId).get();
-        authors.remove(author);
-        foundBook.setAuthors(authors);
-        repo.save(foundBook);
-    }
-
-    @PutMapping(value = "book/delete/tag/{bookId}/{tagId}")
-    public void deleteTagFromBook(@PathVariable long bookId, @PathVariable long tagId) {
-        Book foundBook = findById(bookId);
-        List<Tag> tags = foundBook.getTags();
-        Tag tag = tagRepo.findById(tagId).get();
-        tags.remove(tag);
-        foundBook.setTags(tags);
-        repo.save(foundBook);
-
 	@Autowired
 	private ILoanRepository loanRepo;
 	
@@ -146,21 +113,42 @@ public class BookController {
 	{
 		repo.save(book);
 	}
-	
+
 	@PutMapping(value = "book/update/{id}")
-	public void updateBook(@PathVariable long id, @RequestBody Book book)
-	{
+	public void updateBook(@PathVariable long id, @RequestBody Book book) {
 		Book foundBook = findById(id);
+		List<Author> authors = foundBook.getAuthors();
+		System.out.println(authors);
 		foundBook.setTitle(book.getTitle());
 		foundBook.setIsbn(book.getIsbn());
-		foundBook.setTags(book.getTags());
-		foundBook.setReservations(book.getReservations());
-		foundBook.setBookcopies(book.getBookcopies());
-		foundBook.setAuthors(book.getAuthors());
+//        foundBook.setTags(book.getTags());
+//        foundBook.setReservations(book.getReservations());
+//        foundBook.setBookcopies(book.getBookcopies());
+//        foundBook.setAuthors(book.getAuthors());
 		repo.save(foundBook);
 	}
-	
-	
+
+	@PutMapping(value = "book/delete/author/{bookId}/{authorId}")
+	public void deleteAuthorFromBook(@PathVariable long bookId, @PathVariable long authorId) {
+		Book foundBook = findById(bookId);
+		List<Author> authors = foundBook.getAuthors();
+		Author author = authorRepo.findById(authorId).get();
+		authors.remove(author);
+		foundBook.setAuthors(authors);
+		repo.save(foundBook);
+	}
+
+	@PutMapping(value = "book/delete/tag/{bookId}/{tagId}")
+	public void deleteTagFromBook(@PathVariable long bookId, @PathVariable long tagId) {
+		Book foundBook = findById(bookId);
+		List<Tag> tags = foundBook.getTags();
+		Tag tag = tagRepo.findById(tagId).get();
+		tags.remove(tag);
+		foundBook.setTags(tags);
+		repo.save(foundBook);
+	}
+
+
 	@RequestMapping(value= "book/details/{id}")
 	public BookDetailsDTO findBookDetailsDTOById(@PathVariable long id) {
 		ModelMapper modelMapper = new ModelMapper();
