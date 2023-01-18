@@ -9,6 +9,8 @@ public class BookCopyDetailsDTO {
 	
 	private Long bookId;
 	
+	private String bookIsbn; // for getting the image
+	
 	private int bookCopyNr;
 	
 	private String status;
@@ -16,6 +18,15 @@ public class BookCopyDetailsDTO {
 	private Loan currentLoan;
 	
 	private int timesLoaned;
+
+	
+	public String getBookIsbn() {
+		return bookIsbn;
+	}
+
+	public void setBookIsbn(String bookIsbn) {
+		this.bookIsbn = bookIsbn;
+	}
 
 	public Long getId() {
 		return id;
