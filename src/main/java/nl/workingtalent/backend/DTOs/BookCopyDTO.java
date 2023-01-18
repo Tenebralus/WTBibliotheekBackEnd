@@ -5,10 +5,10 @@ import java.util.List;
 
 import nl.workingtalent.backend.Entities.Author;
 
-//Deze class bevat alléén de gegevens die je nodig hebt voor je programma
-public class LoanDTO {
+public class BookCopyDTO {
+	
 	private Long id;
-		
+	
 	private Long bookCopyId;
 	
 	private String bookTitle;
@@ -118,4 +118,5 @@ public class LoanDTO {
 	}
 	
 	
+
 }

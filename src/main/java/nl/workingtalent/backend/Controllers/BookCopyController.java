@@ -2,12 +2,10 @@ package nl.workingtalent.backend.Controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
-
 import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Repositories.IBookRepository;
 
@@ -21,13 +19,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import nl.workingtalent.backend.DTOs.BookCopyDTO;
 import nl.workingtalent.backend.DTOs.BookCopyDetailsDTO;
 import nl.workingtalent.backend.DTOs.BookCopyUpdateReturnDTO;
-import nl.workingtalent.backend.DTOs.BookDetailsDTO;
+import nl.workingtalent.backend.DTOs.ReservationDTO;
+import nl.workingtalent.backend.Entities.Author;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.BookCopy;
 import nl.workingtalent.backend.Entities.Loan;
+import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Repositories.IBookCopyRepository;
 import nl.workingtalent.backend.Repositories.ILoanRepository;
 
@@ -136,10 +137,57 @@ public class BookCopyController {
 	public void archiveBookCopy(@PathVariable long id)
 	{
 		BookCopy foundBookCopy = findById(id);
-		foundBookCopy.setStatus("archived");
+		
+		if (foundBookCopy.getStatus().equals("archived")) {
+			foundBookCopy.setStatus("available");
+		} else {
+			foundBookCopy.setStatus("archived");
+		}
 		repo.save(foundBookCopy);
 	}
 	
+	
+	
+	
+		/*
+		//DTO voorbeeld
+		@RequestMapping(value= "bookcopy/dto")
+		public List<BookCopyDTO> findAllBookCopyDTOs() {
+			//Modelmapper is een package die DTOs makkelijker maakt
+			ModelMapper modelMapper = new ModelMapper();
+			
+			//Modelmapper probeert zelf uit te vinden welke gegevens van de 'echte' class in de DTO horen, maar als ie het niet snapt kan je handmatig 
+			//relaties aangeven met typeMap
+			modelMapper.typeMap(BookCopy.class, BookCopyDTO.class).addMappings(mapper -> {
+				mapper.map(src -> src.getUser().getFirstName(), 
+						BookCopyDTO::setFirstName);
+				mapper.map(src -> src.getUser().getLastName(), 
+						BookCopyDTO::setLastName);
+				mapper.map(src -> src.getBook().getBookcopies(), 
+						BookCopyDTO::setBookcopies);
+				mapper.map(src -> src.getBook().getAuthors(), 
+						BookCopyDTO::setAuthors);
+				mapper.map(src -> src.getBook().getIsbn(), 
+						BookCopyDTO::setIsbn);
+				mapper.map(src -> src.getBook().getTitle(), 
+						BookCopyDTO::setTitle);
+				mapper.map(src -> src.getBook().getBookCopyNr(), 
+						BookCopyDTO::setBookCopyNr);
+				mapper.map(src -> src.getBook().getDateLoaned(), 
+						BookCopyDTO::setDateLoaned);
+				mapper.map(src -> src.getBook().getDateReturned(), 
+						BookCopyDTO::setDateReturned);
+			});
+			
+			//Dit is nodig om lijsten van objecten te DTOen
+			List<BookCopyDTO> bookcopies = repo.findAll()
+					.stream()
+					.map(bookcop -> modelMapper.map(bookcop, BookCopyDTO.class))
+					.collect(Collectors.toList());
+			
+			 return bookcopies;
+		}*/
+
 	@RequestMapping(value = "bookcopy/details/{id}")
 	public BookCopyDetailsDTO findBookCopyDetailsDTOById(@PathVariable long id) {
 		ModelMapper modelMapper = new ModelMapper();
