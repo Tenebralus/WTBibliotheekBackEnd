@@ -8,6 +8,7 @@ import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Repositories.IBookRepository;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -70,7 +71,7 @@ public class BookCopyController {
 	}
 	
 	@RequestMapping(value = "bookcopy/book/{book}")
-	public BookCopy findByBook(@PathVariable Book book)
+	public List<BookCopy> findByBook(@PathVariable Book book)
 	{
 		return repo.findByBook(book);
 	}
