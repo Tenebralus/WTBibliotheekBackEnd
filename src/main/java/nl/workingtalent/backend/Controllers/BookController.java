@@ -112,6 +112,21 @@ public class BookController {
 	public void createBook(@RequestBody Book book)
 	{
 		repo.save(book);
+		
+		BookCopy bookCopy = new BookCopy();
+		bookCopy.setBook(book);
+		List<BookCopy> copies = new ArrayList<BookCopy>();
+		int size = copies.size();
+		copies.add(bookCopy);
+		book.setBookcopies(copies);
+		
+		// Voeg een exemplaar toe op basis van de bestaande exemplaren
+		bookCopy.setBookCopyNr(size + 1);
+		bookCopy.setBook(book);
+		bookCopy.setStatus("available");
+		
+		bookcopyRepo.save(bookCopy);
+		repo.save(book);
 	}
 
 	@PutMapping(value = "book/update/{id}")
