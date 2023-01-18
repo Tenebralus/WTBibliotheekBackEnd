@@ -1,5 +1,6 @@
 package nl.workingtalent.backend.Controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,39 +109,41 @@ public class BookController {
 		repo.save(foundBook);
 	}
 	
-	/*
+	
 	@RequestMapping(value= "book/details/{id}")
-	public List<BookDetailsDTO> findBookDetailsDTOById(@PathVariable long id) {
+	public BookDetailsDTO findBookDetailsDTOById(@PathVariable long id) {
 		ModelMapper modelMapper = new ModelMapper();
-		
 		modelMapper.typeMap(Book.class, BookDetailsDTO.class);
 		
 		Book book = repo.findById(id).get();
+		List<BookCopy> bookCopies = book.getBookcopies();	
+		List<BookCopyDetailsDTO> bookCopyDTOs = new ArrayList<BookCopyDetailsDTO>();
 		
-		List<BookCopy> bookCopies = book.getBookcopies();
-		
-		String username = "";
-		BookCopy 
 		for(BookCopy bookCopy : bookCopies)
 		{
-			if(bookCopy.getStatus().equals("loaned"))
+			ModelMapper bookCopyModelMapper = new ModelMapper();
+			
+			bookCopyModelMapper.typeMap(BookCopy.class, BookCopyDetailsDTO.class);
+					
+			BookCopyDetailsDTO bookCopyDTO = bookCopyModelMapper.map(bookCopy, BookCopyDetailsDTO.class);
+			List<Loan> allLoans = loanRepo.findByBookCopy(bookCopy);
+			for (Loan loan : allLoans)
 			{
-				book
+				if (loan.getDateReturned() == null)
+				{
+					bookCopyDTO.setCurrentLoan(loan);
+				}
 			}
+			bookCopyDTOs.add(bookCopyDTO);
 		}
-		
-		List<Loan> allLoans = loanRepo.findByBookCopy(bookCopy);
 		
 		BookDetailsDTO bookDTO = modelMapper.map(book, BookDetailsDTO.class);
-		for (Loan element : allLoans) {
-			if (element.getDateReturned() == null) {
-				bookDTO.setUsername(element.getUser().getFirstName() + " " + element.getUser().getLastName());
-			}
-		}
+		bookDTO.setBookAuthors(book.getAuthors());
+		bookDTO.setBookCopyDetailsDTOs(bookCopyDTOs);
 		
 		return bookDTO;
 	}
-*/
+
 	
 	//not want to delete books, just edit bookcopies into archived
 
