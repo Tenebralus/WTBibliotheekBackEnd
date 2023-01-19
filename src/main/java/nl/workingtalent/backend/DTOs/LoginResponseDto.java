@@ -16,12 +16,14 @@ public class LoginResponseDto {
 	public LoginResponseDto(boolean success, User user) {
 		super();
 		this.success = success;
-		this.token = user.getToken();
-		this.admin = user.isAdmin();
-		if (user.getToken() == null) {
-			this.firstLogin = true;
-		} else {
-			this.firstLogin = false;
+		if (user != null) {
+			this.token = user.getToken();
+			this.admin = user.isAdmin();
+			if (user.getToken() == null) {
+				this.firstLogin = true;
+			} else {
+				this.firstLogin = false;
+			}
 		}
 	}
 
