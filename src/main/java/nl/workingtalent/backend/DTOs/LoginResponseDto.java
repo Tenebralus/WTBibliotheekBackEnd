@@ -10,11 +10,19 @@ public class LoginResponseDto {
 	
 	private boolean admin;
 	
+	private boolean firstLogin;
+	
+
 	public LoginResponseDto(boolean success, User user) {
 		super();
 		this.success = success;
 		this.token = user.getToken();
 		this.admin = user.isAdmin();
+		if (user.getToken() == null) {
+			this.firstLogin = true;
+		} else {
+			this.firstLogin = false;
+		}
 	}
 
 	public boolean isSuccess() {
@@ -39,5 +47,13 @@ public class LoginResponseDto {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+	
+	public boolean isFirstLogin() {
+		return firstLogin;
+	}
+
+	public void setFirstLogin(boolean firstLogin) {
+		this.firstLogin = firstLogin;
 	}
 }

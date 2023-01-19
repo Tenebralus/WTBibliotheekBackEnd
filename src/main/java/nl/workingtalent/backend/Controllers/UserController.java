@@ -20,6 +20,7 @@ import nl.workingtalent.backend.DTOs.LoginRequestDto;
 import nl.workingtalent.backend.DTOs.LoginResponseDto;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IUserRepository;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -28,22 +29,24 @@ public class UserController {
 	@Autowired
 	IUserRepository repo;
 	
-	@RequestMapping(value = "user/all")
+	/*@RequestMapping(value = "user/all")
 	public List<User> findAllUsers()
 	{
 		return repo.findAll();
-	}
+	}*/
 	
-	/*@GetMapping("user/all")
+	@GetMapping("user/all")
 	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
 		// Find user by token
+		User user = repo.findByToken(token);
 		
 		// Check if admin
+		if (user.isAdmin()) {
+			// Return users list
+			return repo.findAll();
+		}
 		
-		// Return users list
-		
-		return null;
-	}*/
+	}
 	
 	@RequestMapping(value = "user/search/")
 	public List<User> searchAllUsers() {
@@ -73,7 +76,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "user/emailaddress/{emailAddress}")
-	public List<User> findByEmailAddress(@PathVariable String emailAddress)
+	public Optional<User> findByEmailAddress(@PathVariable String emailAddress)
 	{
 		return repo.findByEmailAddress(emailAddress);
 	}
@@ -119,6 +122,9 @@ public class UserController {
 	@PostMapping(value = "user/create")
 	public void createUser(@RequestBody User user)
 	{
+		String password = "password";
+		String pwHash = BCrypt.withDefaults().hashToString(6, password.toCharArray());
+		user.setPassword(pwHash);
 		repo.save(user);
 	}
 	
@@ -154,7 +160,7 @@ public class UserController {
 	@PostMapping("user/login")
 	public LoginResponseDto userLogin(@RequestBody LoginRequestDto dto) {
 		// Check de user gegevens
-		Optional<User> optional = repo.findByEmailAddressAndPassword(dto.getEmail(), dto.getPassword());
+		Optional<User> optional = repo.findByEmailAddress(dto.getEmail());
 		
 		// Is de kartonen doos leeg
 		if (optional.isEmpty())
@@ -163,6 +169,16 @@ public class UserController {
 		// Get opent de kartonnen doos
 		User user = optional.get();
 		
+		// Verifieer het wachtwoord
+		BCrypt.Result result = BCrypt.verifyer().verify(dto.getPassword().toCharArray(), user.getPassword());
+		
+		if (!result.verified)
+			return new LoginResponseDto(false, null);
+		
+		// Kijk of het de eerste inlog is
+		if (user.getToken() == null)
+			return new LoginResponseDto(true, user);
+		
 		// Maak een token en bewaar die
 		user.setToken(RandomStringUtils.random(80, true, true));
 		repo.save(user);
@@ -170,7 +186,31 @@ public class UserController {
 		// Geef de token terug
 		return new LoginResponseDto(true, user);
 	}
-
 	
+	@PostMapping("user/firstlogin")
+	public LoginResponseDto firstUserLogin(@RequestBody LoginRequestDto dto) {
+		// Check de user gegevens
+		Optional<User> optional = repo.findByEmailAddress(dto.getEmail());
+		
+		// Is de kartonen doos leeg
+		if (optional.isEmpty())
+			return new LoginResponseDto(false, null);
+		
+		// Get opent de kartonnen doos
+		User user = optional.get();
+		
+		// Set nieuw wachtwoord
+		String newPass = dto.getPassword();
+		String pwHash = BCrypt.withDefaults().hashToString(6, newPass.toCharArray());
+		user.setPassword(pwHash);
+		repo.save(user);
+		
+		// Maak een token en bewaar die
+		user.setToken(RandomStringUtils.random(80, true, true));
+		repo.save(user);
+		
+		// Geef de token terug
+		return new LoginResponseDto(true, user);
+ }
 	
 }
