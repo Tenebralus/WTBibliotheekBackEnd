@@ -194,8 +194,22 @@ public class BookCopyController {
         return repo.findAll();
     }
     @RequestMapping(value = "bookcopy/search/{keyword}")
-    public List<BookCopy> searchAllBookCopies(@PathVariable String keyword) {
-    		return repo.search(keyword);
+    public List<BookCopyDTO> searchAllBookCopies(@PathVariable String keyword) {
+    	ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(BookCopy.class,BookCopyDTO.class).addMappings(mapper->{
+			mapper.map(src->src.getBook().getAuthors(), BookCopyDTO::setBookAuthors);
+			mapper.map(src->src.getBook().getUrlImage(), BookCopyDTO::setUrlImage);
+			//mapper.map(src->src.getLoans().get, BookCopyDTO::setUser);
+			//users autors en datums
+		});
+		
+		List<BookCopyDTO> bookDTOs = repo.search(keyword)
+				.stream()
+				.map(copy -> modelMapper.map(copy, BookCopyDTO.class))
+				.collect(Collectors.toList());
+		return bookDTOs;
+
     }
 	
 

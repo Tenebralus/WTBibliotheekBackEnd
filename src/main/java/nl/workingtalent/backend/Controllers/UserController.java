@@ -34,6 +34,17 @@ public class UserController {
 		return repo.findAll();
 	}
 	
+	/*@GetMapping("user/all")
+	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
+		// Find user by token
+		
+		// Check if admin
+		
+		// Return users list
+		
+		return null;
+	}*/
+	
 	@RequestMapping(value = "user/search/")
 	public List<User> searchAllUsers() {
 		return repo.findAll();
@@ -159,17 +170,7 @@ public class UserController {
 		// Geef de token terug
 		return new LoginResponseDto(true, user);
 	}
-	
-	@GetMapping("user/all")
-	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
-		// Find user by token
-		
-		// Check if admin
-		
-		// Return users list
-		
-		return null;
-	}
+
 	
 	
 }
