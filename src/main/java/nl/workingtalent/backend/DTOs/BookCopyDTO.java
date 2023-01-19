@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import nl.workingtalent.backend.Entities.Author;
+import nl.workingtalent.backend.Entities.Tag;
 
 public class BookCopyDTO {
 	
@@ -17,7 +18,9 @@ public class BookCopyDTO {
 	
 	private String bookIsbn;
 	
-	private List<Author> authors;
+	private List<Tag> bookTags; // for showing tags by exemplaren
+	
+	private List<Author> bookAuthors; //for showing authors by exemplaardetails
 	
 	private String bookCopyStatus;
 	
@@ -69,12 +72,20 @@ public class BookCopyDTO {
 		this.bookIsbn = bookIsbn;
 	}
 
-	public List<Author> getAuthors() {
-		return authors;
+	public List<Tag> getBookTags() {
+		return bookTags;
 	}
 
-	public void setAuthors(List<Author> authors) {
-		this.authors = authors;
+	public void setBookTags(List<Tag> bookTag) {
+		this.bookTags = bookTag;
+	}
+
+	public List<Author> getBookAuthors() {
+		return bookAuthors;
+	}
+
+	public void setBookAuthors(List<Author> bookAuthors) {
+		this.bookAuthors = bookAuthors;
 	}
 
 	public String getBookCopyStatus() {

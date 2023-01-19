@@ -5,16 +5,19 @@ import java.util.List;
 import nl.workingtalent.backend.Entities.Author;
 import nl.workingtalent.backend.Entities.BookCopy;
 import nl.workingtalent.backend.Entities.Loan;
+import nl.workingtalent.backend.Entities.Tag;
 
 public class BookDetailsDTO {
 	
-	String bookTitle;
+	private String bookTitle;
 	
-	List<Author> bookAuthors;
+	private List<Author> bookAuthors;
 	
-	String bookIsbn;
+	private List<Tag> bookTag; // for showing tags by exemplaren en boeken
 	
-	List<BookCopyDetailsDTO> bookCopyDetailsDTOs;
+	private String bookIsbn;
+	
+	private List<BookCopyDetailsDTO> bookCopyDetailsDTOs;
 
 	public String getBookTitle() {
 		return bookTitle;
@@ -46,6 +49,14 @@ public class BookDetailsDTO {
 
 	public void setBookCopyDetailsDTOs(List<BookCopyDetailsDTO> bookCopyDetailsDTOs) {
 		this.bookCopyDetailsDTOs = bookCopyDetailsDTOs;
+	}
+
+	public List<Tag> getBookTag() {
+		return bookTag;
+	}
+
+	public void setBookTag(List<Tag> bookTag) {
+		this.bookTag = bookTag;
 	}
 	
 	

@@ -151,7 +151,7 @@ public class BookCopyController {
 		ModelMapper modelMapper = new ModelMapper();
 		
 		modelMapper.typeMap(BookCopy.class,BookCopyDTO.class).addMappings(mapper->{
-			mapper.map(src->src.getBook().getAuthors(), BookCopyDTO::setAuthors);
+			mapper.map(src->src.getBook().getAuthors(), BookCopyDTO::setBookAuthors);
 			//mapper.map(src->src.getLoans().getUser(), BookCopyDTO::setAuthors);
 			//users autors en datums
 		});
@@ -181,7 +181,8 @@ public class BookCopyController {
 				bookCopyDTO.setCurrentLoan(element);
 			}
 		}
-		
+		bookCopyDTO.setBookTags(bookCopyDTO.getBookTags());//opgelost, kannu tags meegeven
+		bookCopyDTO.setBookAuthors(bookCopyDTO.getBookAuthors());//opgelost, kannu tags meegeven
 		return bookCopyDTO;
 		
 	}

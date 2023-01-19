@@ -1,6 +1,10 @@
 package nl.workingtalent.backend.DTOs;
 
+import java.util.List;
+
+import nl.workingtalent.backend.Entities.Author;
 import nl.workingtalent.backend.Entities.Loan;
+import nl.workingtalent.backend.Entities.Tag;
 
 public class BookCopyDetailsDTO {
 	private Long id;//=bookcopyid
@@ -9,7 +13,11 @@ public class BookCopyDetailsDTO {
 	
 	private Long bookId;
 	
-	private String bookIsbn; // for getting the image
+	private String bookIsbn; // for getting the image=> no new one
+	
+	private List<Tag> bookTags; // for showing tags by exemplaren
+	
+	private List<Author> bookAuthors; //for showing authors by exemplaardetails
 	
 	private int bookCopyNr;
 	
@@ -19,13 +27,28 @@ public class BookCopyDetailsDTO {
 	
 	private int timesLoaned;
 
-	
+	public List<Author> getBookAuthors() {
+		return bookAuthors;
+	}
+
+	public void setBookAuthors(List<Author> bookAuthors) {
+		this.bookAuthors = bookAuthors;
+	}
+
 	public String getBookIsbn() {
 		return bookIsbn;
 	}
 
 	public void setBookIsbn(String bookIsbn) {
 		this.bookIsbn = bookIsbn;
+	}
+
+	public List<Tag> getBookTags() {
+		return bookTags;
+	}
+
+	public void setBookTags(List<Tag> bookTag) {
+		this.bookTags = bookTag;
 	}
 
 	public Long getId() {
