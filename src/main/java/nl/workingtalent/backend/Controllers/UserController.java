@@ -2,6 +2,9 @@ package nl.workingtalent.backend.Controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,9 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import nl.workingtalent.backend.DTOs.LoginRequestDto;
+import nl.workingtalent.backend.DTOs.LoginResponseDto;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IUserRepository;
 
@@ -74,7 +81,7 @@ public class UserController {
 	@RequestMapping(value = "user/userpass/{emailAddress}:{password}")
 	public User findByEmailAddressAndPassword(@PathVariable String emailAddress, @PathVariable String password)
 	{
-		return repo.findByEmailAddressAndPassword(emailAddress, password);
+		return repo.findByEmailAddressAndPassword(emailAddress, password).orElse(null);
 		//gives user or null if false
 		//not yet specified if user exists if password is false etc
 		//later: check without logout new browser
@@ -134,4 +141,37 @@ public class UserController {
 		foundUser.setActive(false);
 		repo.save(foundUser);
 	}
+	
+	@PostMapping("user/login")
+	public LoginResponseDto userLogin(@RequestBody LoginRequestDto dto) {
+		// Check de user gegevens
+		Optional<User> optional = repo.findByEmailAddressAndPassword(dto.getEmail(), dto.getPassword());
+		
+		// Is de kartonen doos leeg
+		if (optional.isEmpty())
+			return new LoginResponseDto(false, null);
+		
+		// Get opent de kartonnen doos
+		User user = optional.get();
+		
+		// Maak een token en bewaar die
+		user.setToken(RandomStringUtils.random(80, true, true));
+		repo.save(user);
+		
+		// Geef de token terug
+		return new LoginResponseDto(true, user);
+	}
+	
+	@GetMapping("user/all")
+	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
+		// Find user by token
+		
+		// Check if admin
+		
+		// Return users list
+		
+		return null;
+	}
+	
+	
 }

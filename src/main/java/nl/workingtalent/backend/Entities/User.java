@@ -49,6 +49,9 @@ public class User{
 	@Column(nullable = false)
 	private boolean admin;
 	
+	@Column(nullable = true, length = 100)
+	private String token;
+
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private List<Loan> loans;
@@ -137,5 +140,12 @@ public class User{
 		this.loans = loans;
 	}
 	
+	public String getToken() {
+		return token;
+	}
+	
+	public void setToken(String token) {
+		this.token = token;
+	}
 	
 }
