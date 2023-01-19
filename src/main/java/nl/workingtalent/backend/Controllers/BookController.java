@@ -194,7 +194,7 @@ public class BookController {
 		BookDetailsDTO bookDTO = modelMapper.map(book, BookDetailsDTO.class);
 		bookDTO.setBookAuthors(book.getAuthors());
 		bookDTO.setBookCopyDetailsDTOs(bookCopyDTOs);
-		
+		bookDTO.setBookTag(book.getTags());//opgelost, kannu tags meegeven
 		return bookDTO;
 	}
 }
