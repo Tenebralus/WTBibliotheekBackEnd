@@ -3,7 +3,6 @@ package nl.workingtalent.backend.Controllers;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import nl.workingtalent.backend.DTOs.LoginRequestDto;
 import nl.workingtalent.backend.DTOs.LoginResponseDto;
 import nl.workingtalent.backend.Entities.User;

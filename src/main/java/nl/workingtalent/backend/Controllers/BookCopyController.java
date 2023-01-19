@@ -189,6 +189,15 @@ public class BookCopyController {
 		
 	}
 	
+	@RequestMapping(value = "bookcopy/search/")
+    public List<BookCopy> searchAllBookCopies() {
+        return repo.findAll();
+    }
+    @RequestMapping(value = "bookcopy/search/{keyword}")
+    public List<BookCopy> searchAllBookCopies(@PathVariable String keyword) {
+    		return repo.search(keyword);
+    }
+	
 
 
 }
