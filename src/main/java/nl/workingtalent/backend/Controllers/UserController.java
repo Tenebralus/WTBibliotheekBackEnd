@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import nl.workingtalent.backend.DTOs.ChangePasswordRequestDto;
 import nl.workingtalent.backend.DTOs.LoginRequestDto;
 import nl.workingtalent.backend.DTOs.LoginResponseDto;
 import nl.workingtalent.backend.Entities.User;
@@ -212,6 +213,30 @@ public class UserController {
 			// Return users list
 			return repo.findAll();
 		}
+		
+		else return null;
+		
+	}
+	
+	@PutMapping("user/changepassword")
+	public boolean changePassword(@RequestHeader("Authentication") String token, @RequestBody ChangePasswordRequestDto dto) {
+		User user = repo.findByToken(token);
+		
+		String currentPassword = dto.getCurrentPassword();
+		String newPassword = dto.getNewPassword();
+		
+		// Controleer of het oude wachtwoord klopt
+		BCrypt.Result result = BCrypt.verifyer().verify(currentPassword.toCharArray(), user.getPassword());
+		
+		if (!result.verified)
+			return false;
+		
+		// Encrypt het nieuwe password
+		String pwHash = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());
+		user.setPassword(pwHash);
+		repo.save(user);
+		
+		return true;
 		
 	}
 	
