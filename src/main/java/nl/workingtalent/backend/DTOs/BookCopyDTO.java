@@ -5,6 +5,7 @@ import java.util.List;
 
 import nl.workingtalent.backend.Entities.Author;
 import nl.workingtalent.backend.Entities.Tag;
+import nl.workingtalent.backend.Entities.User;
 
 public class BookCopyDTO {
 	
@@ -25,6 +26,8 @@ public class BookCopyDTO {
 	private List<Author> bookAuthors; //for showing authors by exemplaardetails
 	
 	private String bookCopyStatus;
+	
+	private User user;
 	
 	private String userFirstName;
 	
@@ -136,6 +139,14 @@ public class BookCopyDTO {
 
 	public void setUrlImage(String urlImage) {
 		this.urlImage = urlImage;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	

@@ -3,7 +3,6 @@ package nl.workingtalent.backend.Controllers;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,13 +16,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import nl.workingtalent.backend.DTOs.ChangePasswordRequestDto;
 import nl.workingtalent.backend.DTOs.LoginRequestDto;
 import nl.workingtalent.backend.DTOs.LoginResponseDto;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IUserRepository;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -37,6 +35,19 @@ public class UserController {
 	{
 		return repo.findAll();
 	}*/
+	
+	@GetMapping("user/all")
+	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
+		// Find user by token
+		User user = repo.findByToken(token);
+		
+		// Check if admin
+		if (user.isAdmin()) {
+			// Return users list
+			return repo.findAll();
+		}
+		
+	}
 	
 	@RequestMapping(value = "user/search/")
 	public List<User> searchAllUsers() {
@@ -250,6 +261,6 @@ public class UserController {
 //		
 //		return null;
 //	}
-	
+
 	
 }
