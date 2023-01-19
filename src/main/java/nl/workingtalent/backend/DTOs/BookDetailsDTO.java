@@ -15,9 +15,19 @@ public class BookDetailsDTO {
 	
 	private List<Tag> bookTag; // for showing tags by exemplaren en boeken
 	
+	private String urlImage; //for images
+	
 	private String bookIsbn;
 	
 	private List<BookCopyDetailsDTO> bookCopyDetailsDTOs;
+
+	public String getUrlImage() {
+		return urlImage;
+	}
+
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
+	}
 
 	public String getBookTitle() {
 		return bookTitle;
