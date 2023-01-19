@@ -2,6 +2,7 @@ package nl.workingtalent.backend.Repositories;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +18,7 @@ public interface IUserRepository extends JpaRepository<User, Long>{
 	List<User> findByActive(boolean active);
 	List<User> findByAdmin(boolean admin);
 	List<User> findByPassword(String password);
-	User findByEmailAddressAndPassword(String emailAddress, String password);
+	Optional<User> findByEmailAddressAndPassword(String emailAddress, String password);
 	
 	@Query("SELECT DISTINCT u FROM User u "
 			+ "WHERE CONCAT(u.firstName, ' ', u.lastName, ' ', u.emailAddress) LIKE %?1%")
