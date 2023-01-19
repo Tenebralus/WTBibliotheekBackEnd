@@ -19,9 +19,14 @@ public interface ILoanRepository extends JpaRepository<Loan, Long>{
 	List<Loan> findByBookCopy(@PathVariable BookCopy bookcopy);
 	List<Loan> findByUser(@PathVariable User user);
 	
-	@Query("SELECT l FROM Loan l LEFT JOIN l.bookCopy bc LEFT JOIN l.user u LEFT JOIN bc.book b LEFT JOIN b.authors a "
+	@Query("SELECT DISTINCT l FROM Loan l LEFT JOIN l.bookCopy bc LEFT JOIN l.user u LEFT JOIN bc.book b LEFT JOIN b.authors a "
 			+ "WHERE CONCAT (b.title, ' ', b.isbn) LIKE %?1% "
 			+ "OR CONCAT (a.firstName, ' ', a.lastName) LIKE %?1% "
 			+ "OR CONCAT(u.firstName, ' ', u.lastName) LIKE %?1%")
 	public List<Loan> search(String keyword);
+	
+	@Query("SELECT DISTINCT l FROM Loan l LEFT JOIN l.bookCopy bc LEFT JOIN l.user u LEFT JOIN bc.book b LEFT JOIN b.authors a "
+			+ "WHERE bc.id IS ?2 "
+			+ "AND (CONCAT(u.firstName, ' ', u.lastName) LIKE %?1%)")
+	public List<Loan> searchBookCopyByUser(String keyword, Long bookCopyId);
 }
