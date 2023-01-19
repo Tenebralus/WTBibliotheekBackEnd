@@ -19,6 +19,8 @@ public class BookCopyDetailsDTO {
 	
 	private List<Author> bookAuthors; //for showing authors by exemplaardetails
 	
+	private String urlImage;//showing images bij exemplaren via books
+	
 	private int bookCopyNr;
 	
 	private String status;
@@ -26,6 +28,14 @@ public class BookCopyDetailsDTO {
 	private Loan currentLoan;
 	
 	private int timesLoaned;
+	
+	public String getUrlImage() {
+		return urlImage;
+	}
+
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
+	}
 
 	public List<Author> getBookAuthors() {
 		return bookAuthors;

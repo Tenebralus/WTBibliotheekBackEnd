@@ -18,6 +18,8 @@ public class BookCopyDTO {
 	
 	private String bookIsbn;
 	
+	private String urlImage;
+	
 	private List<Tag> bookTags; // for showing tags by exemplaren
 	
 	private List<Author> bookAuthors; //for showing authors by exemplaardetails
@@ -126,6 +128,14 @@ public class BookCopyDTO {
 
 	public void setDateReturned(LocalDateTime dateReturned) {
 		this.dateReturned = dateReturned;
+	}
+
+	public String getUrlImage() {
+		return urlImage;
+	}
+
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
 	}
 	
 	
