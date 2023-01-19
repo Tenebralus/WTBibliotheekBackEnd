@@ -30,11 +30,11 @@ public class UserController {
 	@Autowired
 	IUserRepository repo;
 	
-	@RequestMapping(value = "user/all")
+	/*@RequestMapping(value = "user/all")
 	public List<User> findAllUsers()
 	{
 		return repo.findAll();
-	}
+	}*/
 	
 	@RequestMapping(value = "user/search/")
 	public List<User> searchAllUsers() {
@@ -165,10 +165,15 @@ public class UserController {
 	@GetMapping("user/all")
 	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
 		// Find user by token
+		User user = repo.findByToken(token);
 		
 		// Check if admin
+		if (user.isAdmin()) {
+			// Return users list
+			return repo.findAll();
+		}
 		
-		// Return users list
+		
 		
 		return null;
 	}
