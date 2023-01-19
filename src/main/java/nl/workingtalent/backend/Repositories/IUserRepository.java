@@ -19,6 +19,7 @@ public interface IUserRepository extends JpaRepository<User, Long>{
 	List<User> findByAdmin(boolean admin);
 	List<User> findByPassword(String password);
 	Optional<User> findByEmailAddressAndPassword(String emailAddress, String password);
+	User findByToken(String token);
 	
 	@Query("SELECT DISTINCT u FROM User u "
 			+ "WHERE CONCAT(u.firstName, ' ', u.lastName, ' ', u.emailAddress) LIKE %?1%")
