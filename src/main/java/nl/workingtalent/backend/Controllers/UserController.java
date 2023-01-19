@@ -159,7 +159,7 @@ public class UserController {
 		repo.save(user);
 		
 		// Geef de token terug
-		return new LoginResponseDto(true, user.getToken());
+		return new LoginResponseDto(true, user);
 	}
 	
 	@GetMapping("user/all")
