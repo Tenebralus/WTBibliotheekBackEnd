@@ -136,16 +136,25 @@ public class UserController {
 	public void updateUser(@PathVariable long id, @RequestBody User user)
 	{
 		User foundUser = findById(id);
-		foundUser.setFirstName(user.getFirstName());
-		foundUser.setLastName(user.getLastName());
-		foundUser.setEmailAddress(user.getEmailAddress());
-		foundUser.setPassword(user.getPassword());
+		
+		if(user.getFirstName() != null && user.getFirstName().length() != 0) {foundUser.setFirstName(user.getFirstName());}
+		if(user.getLastName() != null && user.getLastName().length() != 0) {foundUser.setLastName(user.getLastName());}
+		if(user.getEmailAddress() != null && user.getEmailAddress().length() != 0) {foundUser.setEmailAddress(user.getEmailAddress());}
+		if(user.getPassword() != null && user.getPassword().length() != 0) {foundUser.setPassword(user.getPassword());}
+		foundUser.setAdmin(user.isAdmin());
+		
+		//foundUser.setLastName(user.getLastName());
+		//foundUser.setEmailAddress(user.getEmailAddress());
+		//foundUser.setPassword(user.getPassword());
+		
 		//foundUser.setDateAccountCreated(user.getDateAccountCreated());
 		//you probably do not want to edit the creation date
-		foundUser.setDateAccountDeleted(user.getDateAccountDeleted());
-		foundUser.setActive(user.isActive());
-		foundUser.setLoans(user.getLoans());
-		foundUser.setAdmin(user.isAdmin());
+		
+		//foundUser.setDateAccountDeleted(user.getDateAccountDeleted());
+		//foundUser.setActive(user.isActive());
+		//foundUser.setLoans(user.getLoans());
+		//foundUser.setAdmin(user.isAdmin());
+		
 		repo.save(foundUser);
 	}
 	
