@@ -12,7 +12,7 @@ import nl.workingtalent.backend.Entities.User;
 public interface IUserRepository extends JpaRepository<User, Long>{ 
 	List<User> findByFirstName(String firstName);
 	List<User> findByLastName(String lastName);
-	List<User> findByEmailAddress(String emailAddress);
+	Optional<User> findByEmailAddress(String emailAddress);
 	List<User> findByDateAccountCreated(LocalDateTime dateAccountCreated);
 	List<User> findByDateAccountDeleted(LocalDateTime dateAccountDeleted);
 	List<User> findByActive(boolean active);
@@ -22,6 +22,11 @@ public interface IUserRepository extends JpaRepository<User, Long>{
 	User findByToken(String token);
 	
 	@Query("SELECT DISTINCT u FROM User u "
-			+ "WHERE CONCAT(u.firstName, ' ', u.lastName, ' ', u.emailAddress) LIKE %?1%")
+			+ "WHERE CONCAT(u.firstName, ' ', u.lastName)  LIKE %?1% "
+			+ "OR u.emailAddress LIKE %?1% ")
+	/*@Query("SELECT DISTINCT u FROM User u "
+            + "WHERE CONCAT(u.firstName, ' ', u.lastName, ' ', u.emailAddress) LIKE %?1%  "
+            +  "IF(%?1% == 'Verwijderd', u.active = 0, IF (%?1% == 'Active', u.active = 1, u.active IS NOT NULL))"
+        )*/
 	public List<User> search(String keyword);
 }

@@ -59,7 +59,7 @@ public class TagController {
 	{
 		Tag foundTag = findById(id);
 		foundTag.setName(tag.getName());
-		foundTag.setBooks(tag.getBooks());
+//		foundTag.setBooks(tag.getBooks());
 		repo.save(foundTag);
 	}
 	

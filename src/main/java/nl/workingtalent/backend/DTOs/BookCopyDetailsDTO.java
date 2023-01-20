@@ -5,6 +5,7 @@ import java.util.List;
 import nl.workingtalent.backend.Entities.Author;
 import nl.workingtalent.backend.Entities.Loan;
 import nl.workingtalent.backend.Entities.Tag;
+import nl.workingtalent.backend.Entities.User;
 
 public class BookCopyDetailsDTO {
 	private Long id;//=bookcopyid
