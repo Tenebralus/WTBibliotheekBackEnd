@@ -120,11 +120,13 @@ public class UserController {
 	public void updateUser(@PathVariable long id, @RequestBody User user)
 	{
 		User foundUser = findById(id);
-		System.out.println(user.getFirstName());
+		
 		if(user.getFirstName() != null && user.getFirstName().length() != 0) {foundUser.setFirstName(user.getFirstName());}
 		if(user.getLastName() != null && user.getLastName().length() != 0) {foundUser.setLastName(user.getLastName());}
 		if(user.getEmailAddress() != null && user.getEmailAddress().length() != 0) {foundUser.setEmailAddress(user.getEmailAddress());}
 		if(user.getPassword() != null && user.getPassword().length() != 0) {foundUser.setPassword(user.getPassword());}
+		foundUser.setAdmin(user.isAdmin());
+		
 		//foundUser.setLastName(user.getLastName());
 		//foundUser.setEmailAddress(user.getEmailAddress());
 		//foundUser.setPassword(user.getPassword());
