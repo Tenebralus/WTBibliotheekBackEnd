@@ -30,11 +30,11 @@ public class UserController {
 	@Autowired
 	IUserRepository repo;
 	
-	@RequestMapping(value = "user/all")
+	/*@RequestMapping(value = "user/all")
 	public List<User> findAllUsers()
 	{
 		return repo.findAll();
-	}
+	}*/
 	
 
 	@GetMapping("user/all")
