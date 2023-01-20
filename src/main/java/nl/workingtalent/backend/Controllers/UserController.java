@@ -36,19 +36,6 @@ public class UserController {
 		return repo.findAll();
 	}*/
 	
-	@GetMapping("user/all")
-	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
-		// Find user by token
-		User user = repo.findByToken(token);
-		
-		// Check if admin
-		if (user.isAdmin()) {
-			// Return users list
-			return repo.findAll();
-		}
-		
-	}
-	
 	@RequestMapping(value = "user/search/")
 	public List<User> searchAllUsers() {
 		return repo.findAll();
