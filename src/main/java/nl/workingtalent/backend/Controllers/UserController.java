@@ -30,12 +30,28 @@ public class UserController {
 	@Autowired
 	IUserRepository repo;
 	
-	/*@RequestMapping(value = "user/all")
+	@RequestMapping(value = "user/all")
 	public List<User> findAllUsers()
 	{
 		return repo.findAll();
-	}*/
+	}
 	
+
+	@GetMapping("user/all")
+	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
+		// Find user by token
+		User user = repo.findByToken(token);
+		
+		// Check if admin
+		if (user.isAdmin()) {
+			// Return users list
+			return repo.findAll();
+		}
+		
+		else return null;
+		
+	}
+  
 	@RequestMapping(value = "user/search/")
 	public List<User> searchAllUsers() {
 		return repo.findAll();
@@ -200,21 +216,6 @@ public class UserController {
 		// Geef de token terug
 		return new LoginResponseDto(true, user);
  }
-
-	@GetMapping("user/all")
-	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
-		// Find user by token
-		User user = repo.findByToken(token);
-		
-		// Check if admin
-		if (user.isAdmin()) {
-			// Return users list
-			return repo.findAll();
-		}
-		
-		else return null;
-		
-	}
 	
 	@PutMapping("user/changepassword")
 	public boolean changePassword(@RequestHeader("Authentication") String token, @RequestBody ChangePasswordRequestDto dto) {
