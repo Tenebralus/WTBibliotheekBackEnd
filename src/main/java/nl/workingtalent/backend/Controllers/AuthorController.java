@@ -66,7 +66,7 @@ public class AuthorController {
 		Author foundAuthor = findById(id);
 		foundAuthor.setFirstName(author.getFirstName());
 		foundAuthor.setLastName(author.getLastName());
-		foundAuthor.setBooks(author.getBooks());
+//		foundAuthor.setBooks(author.getBooks());
 		repo.save(foundAuthor);
 	}
 
