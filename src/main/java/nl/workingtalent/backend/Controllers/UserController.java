@@ -36,7 +36,8 @@ public class UserController {
 		return repo.findAll();
 	}
 	
-	/*@GetMapping("user/all")
+
+	@GetMapping("user/all")
 	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
 		// Find user by token
 		User user = repo.findByToken(token);
@@ -49,8 +50,8 @@ public class UserController {
 		
 		else return null;
 		
-	}*/
-	
+	}
+  
 	@RequestMapping(value = "user/search/")
 	public List<User> searchAllUsers() {
 		return repo.findAll();
