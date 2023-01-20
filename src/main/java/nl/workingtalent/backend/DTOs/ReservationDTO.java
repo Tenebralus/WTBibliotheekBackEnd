@@ -3,6 +3,7 @@ package nl.workingtalent.backend.DTOs;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import nl.workingtalent.backend.Entities.Author;
 import nl.workingtalent.backend.Entities.BookCopy;
 
 //Deze class bevat alléén de gegevens die je nodig hebt voor je programma
@@ -13,6 +14,7 @@ public class ReservationDTO {
 	
 	private Long bookId;
 	
+	private List<Author> authors;
 	
 	private String firstName;
 	
@@ -76,6 +78,14 @@ public class ReservationDTO {
 
 	public void setReservationDate(LocalDateTime reservationDate) {
 		this.reservationDate = reservationDate;
+	}
+
+	public List<Author> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(List<Author> authors) {
+		this.authors = authors;
 	}
 	
 	
