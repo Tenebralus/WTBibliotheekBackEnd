@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import nl.workingtalent.backend.Repositories.ITagRepository;
 import nl.workingtalent.backend.Repositories.iAuthorRepository;
+import org.hibernate.annotations.Cascade;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -160,6 +161,26 @@ public class BookController {
 		Tag tag = tagRepo.findById(tagId).get();
 		tags.remove(tag);
 		foundBook.setTags(tags);
+		repo.save(foundBook);
+	}
+
+	@PostMapping(value = "book/add/tag/{bookId}")
+	public void addTagToBook(@PathVariable long bookId, @RequestBody Tag tag) {
+		Book foundBook = findById(bookId);
+		List<Tag> tags = foundBook.getTags();
+		Tag newTag = tagRepo.findByName(tag.getName()).get(0);
+		tags.add(newTag);
+		foundBook.setTags(tags);
+		repo.save(foundBook);
+	}
+
+	@PostMapping(value = "book/add/author/{bookId}")
+	public void addAuthorToBook(@PathVariable long bookId, @RequestBody Author author) {
+		Book foundBook = findById(bookId);
+		List<Author> authors = foundBook.getAuthors();
+		Author newAuthor = authorRepo.findBylastName(author.getLastName()).get(0);
+		authors.add(newAuthor);
+		foundBook.setAuthors(authors);
 		repo.save(foundBook);
 	}
 
