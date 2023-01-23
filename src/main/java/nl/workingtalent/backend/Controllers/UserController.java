@@ -29,13 +29,13 @@ public class UserController {
 	
 	@Autowired
 	IUserRepository repo;
-	
+	/*
 	@RequestMapping(value = "user/all")
 	public List<User> findAllUsers()
 	{
 		return repo.findAll();
 	}
-	
+	*/
 
 	@GetMapping("user/all")
 	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
