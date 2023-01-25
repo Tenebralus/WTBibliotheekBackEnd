@@ -24,7 +24,6 @@ public class EmailController {
 
 	@PostMapping("/sendemail")
 	public EmailDTO sendEmail(@RequestBody EmailDTO dto) {
-		//LoremIpsum loremIpsum = new LoremIpsum();
 		dto.setVerificationCode(GenerateVerificationCode());
 		dto.setText("Je code is: " + dto.getVerificationCode() + ".");
 		dto.setTitle("Verificatie Code voor WT bibliotheek");
@@ -35,8 +34,6 @@ public class EmailController {
 	
 	@GetMapping("/sendemailtest")
 	public void sendEmailTest() {
-		//LoremIpsum loremIpsum = new LoremIpsum();
-
 		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", "legendariuszz@hotmail.com", "titel", "test");
 	}
 	
