@@ -3,24 +3,45 @@ package nl.workingtalent.backend.Controllers;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.EmailService;
+import nl.workingtalent.backend.DTOs.EmailDTO;
 
 //import de.svenjacobs.loremipsum.LoremIpsum;
 
 @RestController
+@CrossOrigin(maxAge = 3600)
 public class EmailController {
 
 	@Autowired
 	private EmailService emailService;
 
-	@GetMapping("/sendemail")
-	public void sendEmail() {
+	@PostMapping("/sendemail")
+	public EmailDTO sendEmail(@RequestBody EmailDTO dto) {
+		//LoremIpsum loremIpsum = new LoremIpsum();
+		dto.setVerificationCode(GenerateVerificationCode());
+		dto.setText("Je code is: " + dto.getVerificationCode() + ".");
+		dto.setTitle("Verificatie Code voor WT bibliotheek");
+		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", dto.getReceiver(), dto.getTitle(), dto.getText());
+		
+		return dto;
+	}
+	
+	@GetMapping("/sendemailtest")
+	public void sendEmailTest() {
 		//LoremIpsum loremIpsum = new LoremIpsum();
 
-		this.emailService.sendSimpleMessage("noreply@demo.nl", "legendariuszz@hotmail.com", "Demo bericht", "Hallo");
+		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", "legendariuszz@hotmail.com", "titel", "test");
+	}
+	
+	private String GenerateVerificationCode(){
+		return String.valueOf((int)Math.round(Math.random() * 90000) +10000) + "WT";
 	}
 /*
 	@GetMapping("/sendemailwithattachment")
