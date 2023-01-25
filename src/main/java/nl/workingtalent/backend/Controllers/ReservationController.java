@@ -2,6 +2,7 @@ package nl.workingtalent.backend.Controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.DTOs.ReservationDTO;
 import nl.workingtalent.backend.DTOs.ReservationRequestDTO;
+import nl.workingtalent.backend.DTOs.ReservationResponseDTO;
 import nl.workingtalent.backend.DTOs.ReservationUserDTO;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Entities.User;
+import nl.workingtalent.backend.Repositories.IBookRepository;
 import nl.workingtalent.backend.Repositories.IReservationRepository;
 import nl.workingtalent.backend.Repositories.IUserRepository;
 
@@ -33,9 +36,9 @@ public class ReservationController {
 	@Autowired
 	private IReservationRepository repo;
 	
-	/*@Autowired
+	@Autowired
 	private IBookRepository bookRepo;
-	*/
+	
 	@Autowired
 	private IUserRepository userRepo;
 	
@@ -126,19 +129,34 @@ public class ReservationController {
 	
 	//variations to create
 	@PostMapping("book/{bookId}/createreservation")
-	public void createReservationViaBook(@PathVariable(value = "bookId") Long bookId, @RequestBody ReservationRequestDTO dto) {
+	public ReservationResponseDTO createReservationViaBook(@PathVariable(value = "bookId") Long bookId, @RequestBody ReservationRequestDTO dto) {
 		Reservation reservation = new Reservation();
 		
-		Book book = new Book();
-		book.setId(bookId);
+		Optional<Book> optional = bookRepo.findById(bookId);
+		Book book = optional.get();
 		
 		User user = userRepo.findByToken(dto.getToken());
 		
+		// Get a list of this user's current reservations
+		List<Reservation> currentReservations = repo.findByUserId(user.getId());
+		// Check if any of the user's current reservations are for the same book
+		for (Reservation res : currentReservations) {
+			if (res.getBook() == book) {
+				// Returns that the book is a duplicate and the createReservation failed
+				return new ReservationResponseDTO(true, false);
+			}
+		}
+		
+		// If not a duplicate, sets all the correct information
 		reservation.setBook(book);
 		reservation.setDateReserved(LocalDateTime.now());
 		reservation.setUser(user);
 		
+		// Saves to DB
 		repo.save(reservation);
+		
+		// Returns success
+		return new ReservationResponseDTO(false, true);
 	}
 	
 	//standard create update & delete
