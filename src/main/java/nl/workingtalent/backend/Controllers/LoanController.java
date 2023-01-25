@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import nl.workingtalent.backend.DTOs.BookDetailsDTO;
 import nl.workingtalent.backend.DTOs.LoanDTO;
+import nl.workingtalent.backend.DTOs.SearchBookDetailsRequestDto;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.BookCopy;
 import nl.workingtalent.backend.Entities.Loan;
@@ -90,6 +92,18 @@ public class LoanController {
 				.map(loan -> modelMapper.map(loan, LoanDTO.class))
 				.collect(Collectors.toList());
 
+		return loans;
+	}
+	
+	@RequestMapping(value = "loan/search/bookdetails")
+	public List<LoanDTO> searchBookDetails(@RequestBody SearchBookDetailsRequestDto dto) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		List<LoanDTO> loans = repo.searchBookDetailsByUser(dto.getKeyword(), dto.getBookId())
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+		
 		return loans;
 	}
 	
