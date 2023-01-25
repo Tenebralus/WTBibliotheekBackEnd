@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import nl.workingtalent.backend.DTOs.ChangePasswordRequestDto;
 import nl.workingtalent.backend.DTOs.LoginRequestDto;
 import nl.workingtalent.backend.DTOs.LoginResponseDto;
+import nl.workingtalent.backend.Entities.Loan;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IUserRepository;
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -158,10 +159,17 @@ public class UserController {
 		repo.save(foundUser);
 	}
 	
-	@DeleteMapping(value = "user/anonymize/{id}")
-	public void anonymizeUser(@PathVariable long id, @RequestBody User user)
+	@PutMapping(value = "user/anonymize/{id}")
+	public void anonymizeUser(@PathVariable long id)
 	{
 		User foundUser = findById(id);
+		
+		//if(user.getFirstName() != null && user.getFirstName().length() != 0) {foundUser.setFirstName("anon");}
+		//if(user.getLastName() != null && user.getLastName().length() != 0) {foundUser.setLastName("anon");}
+		//if(user.getEmailAddress() != null && user.getEmailAddress().length() != 0) {foundUser.setEmailAddress("anon@wt.nl");}
+		//if(user.getPassword() != null && user.getPassword().length() != 0) {foundUser.setPassword("password");}
+		//foundUser.setAdmin(user.isAdmin());
+		
 		foundUser.setFirstName("anon");
 		foundUser.setLastName("anon");
 		foundUser.setEmailAddress("anon@wt.nl");
@@ -244,20 +252,24 @@ public class UserController {
 		user.setPassword(pwHash);
 		repo.save(user);
 		
-		return true;
-		
+		return true;	
 	}
 	
-//	@GetMapping("user/all")
-//	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
-//		// Find user by token
-//		
-//		// Check if admin
-//		
-//		// Return users list
-//		
-//		return null;
-//	}
-
+	@GetMapping("users/loans/{id}")
+	public boolean receiveLoans(@PathVariable long id) {
+		User user = findById(id);
+		List<Loan> loans = user.getLoans();
+		if(loans==null) {
+			return false;
+		} else {
+			for (Loan loan : loans) {
+				if (loan.getDateReturned()==null) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
 	
+
 }
