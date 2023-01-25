@@ -20,7 +20,7 @@ public class EmailController {
 	public void sendEmail() {
 		//LoremIpsum loremIpsum = new LoremIpsum();
 
-		this.emailService.sendSimpleMessage("noreply@demo.nl", "to@demo.nl", "Demo bericht", "test");
+		this.emailService.sendSimpleMessage("noreply@demo.nl", "legendariuszz@hotmail.com", "Demo bericht", "Hallo");
 	}
 /*
 	@GetMapping("/sendemailwithattachment")
