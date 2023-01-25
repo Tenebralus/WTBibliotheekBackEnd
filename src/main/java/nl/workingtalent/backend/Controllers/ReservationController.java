@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.DTOs.ReservationDTO;
+import nl.workingtalent.backend.DTOs.ReservationRequestDTO;
 import nl.workingtalent.backend.DTOs.ReservationUserDTO;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Entities.User;
 import nl.workingtalent.backend.Repositories.IReservationRepository;
+import nl.workingtalent.backend.Repositories.IUserRepository;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -33,9 +35,9 @@ public class ReservationController {
 	
 	/*@Autowired
 	private IBookRepository bookRepo;
-	
+	*/
 	@Autowired
-	private IUserRepository userRepo;*/
+	private IUserRepository userRepo;
 	
 	@RequestMapping(value = "reservation/all")
 	public List<Reservation> findAllReservations()
@@ -124,12 +126,18 @@ public class ReservationController {
 	
 	//variations to create
 	@PostMapping("book/{bookId}/createreservation")
-	public void createReservationViaBook(@PathVariable(value = "bookId") Long bookId) {
+	public void createReservationViaBook(@PathVariable(value = "bookId") Long bookId, @RequestBody ReservationRequestDTO dto) {
 		Reservation reservation = new Reservation();
+		
 		Book book = new Book();
 		book.setId(bookId);
+		
+		User user = userRepo.findByToken(dto.getToken());
+		
 		reservation.setBook(book);
 		reservation.setDateReserved(LocalDateTime.now());
+		reservation.setUser(user);
+		
 		repo.save(reservation);
 	}
 	
