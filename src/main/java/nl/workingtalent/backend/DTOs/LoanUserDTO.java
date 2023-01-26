@@ -14,7 +14,6 @@ public class LoanUserDTO {
 	
 	private String lastName;
 
-
 	public BookCopy getBookcopy() {
 		return bookcopy;
 	}
