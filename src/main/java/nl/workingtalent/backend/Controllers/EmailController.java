@@ -21,7 +21,9 @@ public class EmailController {
 
 	@Autowired
 	private EmailService emailService;
-
+	
+	/** Functie om een mail te versturen, momenteel zo opgesteld dat het hotmail account van de bibliotheek mail adres de verstuurder is.
+	 * 	Verstuurder details staan in application.properties. */
 	@PostMapping("/sendemail")
 	public EmailDTO sendEmail(@RequestBody EmailDTO dto) {
 		dto.setVerificationCode(GenerateVerificationCode());
@@ -31,9 +33,11 @@ public class EmailController {
 		return dto;
 	}
 	
+	/** Functie om snel een test uit te voeren met het hotmail account van de bibliotheek mail adres,
+	 *	bij de tweede parameter het mail adres invoeren waar de mail naartoe gestuurd moet worden. */
 	@GetMapping("/sendemailtest")
 	public void sendEmailTest() {
-		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", "legendariuszz@hotmail.com", "titel", "test");
+		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", "naam@hotmail.com", "titel", "test");
 	}
 	
 	private String GenerateVerificationCode(){
