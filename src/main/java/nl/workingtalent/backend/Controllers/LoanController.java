@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.DTOs.BookDetailsDTO;
 import nl.workingtalent.backend.DTOs.LoanDTO;
+import nl.workingtalent.backend.DTOs.SearchAllLoansRequestDTO;
 import nl.workingtalent.backend.DTOs.SearchBookDetailsRequestDto;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.BookCopy;
@@ -100,6 +101,40 @@ public class LoanController {
 		ModelMapper modelMapper = new ModelMapper();
 		
 		List<LoanDTO> loans = repo.searchBookDetailsByUser(dto.getKeyword(), dto.getBookId())
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+		
+		return loans;
+	}
+	
+	@RequestMapping(value = "loan/search/current")
+	public List<LoanDTO> searchCurrentLoans(@RequestBody SearchAllLoansRequestDTO dto) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(), 
+					LoanDTO::setAuthors);
+		});
+		
+		List<LoanDTO> loans = repo.searchAllCurrent(dto.getKeyword())
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+		
+		return loans;
+	}
+	
+	@RequestMapping(value = "loan/search/old")
+	public List<LoanDTO> searchOldLoans(@RequestBody SearchAllLoansRequestDTO dto) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(), 
+					LoanDTO::setAuthors);
+		});
+		
+		List<LoanDTO> loans = repo.searchAllOld(dto.getKeyword())
 				.stream()
 				.map(loan -> modelMapper.map(loan, LoanDTO.class))
 				.collect(Collectors.toList());
@@ -197,6 +232,40 @@ public class LoanController {
 				.map(loan -> modelMapper.map(loan, LoanDTO.class))
 				.collect(Collectors.toList());
 
+		return loans;
+	}
+	
+	@RequestMapping(value="loan/dto/all/current")
+	public List<LoanDTO> findAllCurrentLoanDTOs() {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(), 
+					LoanDTO::setAuthors);
+		});
+		
+		List<LoanDTO> loans = repo.findByDateReturned(null)
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+		
+		return loans;
+	}
+	
+	@RequestMapping(value="loan/dto/all/old")
+	public List<LoanDTO> findAllOldLoanDTOs() {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(), 
+					LoanDTO::setAuthors);
+		});
+		
+		List<LoanDTO> loans = repo.findByDateReturnedNotNull()
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+		
 		return loans;
 	}
 	
