@@ -22,4 +22,10 @@ public interface IReservationRepository extends JpaRepository<Reservation, Long>
 			+ "WHERE b.title LIKE %?1% "
 			+ "OR CONCAT(a.firstName, ' ', a.lastName)  LIKE %?1%" )
 	public List<Reservation> searchPerUser(String keyword);
+
+	@Query("SELECT DISTINCT r FROM Reservation r JOIN r.book b JOIN r.user u LEFT JOIN b.authors a "
+			+ "WHERE u.firstName = ?2 "
+			+ "AND (CONCAT(a.firstName, ' ', a.lastName) LIKE %?1% "
+			+ "OR b.title LIKE %?1%) ")
+	public List<Reservation> searchIndividual(String keyword, String keyword2);
  }
