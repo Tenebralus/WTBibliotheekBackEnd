@@ -269,6 +269,7 @@ public class LoanController {
 	public void createNonReservatedLoanViaBookcopy(@RequestBody LoanUserDTO dto) {
 		Optional<User> optionalUser = userRepo.findByFirstNameAndLastName(dto.getFirstName(), dto.getLastName());
 		Optional<BookCopy> optionalBookCopy = bookCopyRepo.findById(dto.getBookCopyId());
+		
 		//BookCopy bookCopy = bookCopyRepo.findById(bookCopyId).get();
 		// Is de kartonen doos leeg
 		if (optionalUser.isEmpty() || optionalBookCopy.isEmpty())
@@ -277,6 +278,13 @@ public class LoanController {
 		// Get opent de kartonnen doos
 		User user = optionalUser.get();
 		BookCopy bookCopy = optionalBookCopy.get();
+		
+		Optional<Reservation> optionalReservation = reservationRepo.findByUserIdAndBookId(user.getId(), bookCopy.getBook().getId());
+		
+		if (!optionalReservation.isEmpty()) {
+			Reservation reservation  = optionalReservation.get();
+			reservationRepo.deleteById(reservation.getId());
+		}
 		
 		Loan loan = new Loan();
 		loan.setDateLoaned(LocalDateTime.now());
