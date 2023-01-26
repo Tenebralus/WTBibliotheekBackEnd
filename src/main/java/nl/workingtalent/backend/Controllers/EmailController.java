@@ -28,7 +28,6 @@ public class EmailController {
 		dto.setText("Je code is: " + dto.getVerificationCode() + ".");
 		dto.setTitle("Verificatie Code voor WT bibliotheek");
 		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", dto.getReceiver(), dto.getTitle(), dto.getText());
-		
 		return dto;
 	}
 	
