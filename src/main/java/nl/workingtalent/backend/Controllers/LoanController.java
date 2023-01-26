@@ -217,12 +217,12 @@ public class LoanController {
 	}
 
 	@GetMapping(value="loan/dto/user")
-	public List<LoanDTO> findLoanDTOsByUser(@RequestHeader("Email") String email) {
+	public List<LoanDTO> findLoanDTOsByUser(@RequestHeader("token") String token) {
 		ModelMapper modelMapper = new ModelMapper();
 
-		System.out.println(email);
 
-		Optional<User> user = userRepo.findByEmailAddress(email);
+		User user = userRepo.findByToken(token);
+
 
 		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
 			mapper.map(src -> src.getId(),
@@ -251,7 +251,7 @@ public class LoanController {
 //		if (user.isEmpty())
 //			return findLoanDTOsByBookCopyId(false);
 //
-		List<Loan> allLoans = repo.findByUser(user.get());
+		List<Loan> allLoans = repo.findByUser(user);
 
 		List<LoanDTO> loans = allLoans
 				.stream()
