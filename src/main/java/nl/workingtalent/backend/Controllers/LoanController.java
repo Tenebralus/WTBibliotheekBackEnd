@@ -1,5 +1,6 @@
 package nl.workingtalent.backend.Controllers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +19,23 @@ import org.springframework.web.bind.annotation.*;
 
 import nl.workingtalent.backend.DTOs.BookDetailsDTO;
 import nl.workingtalent.backend.DTOs.LoanDTO;
+import nl.workingtalent.backend.DTOs.LoanUserDTO;
+import nl.workingtalent.backend.DTOs.LoginRequestDto;
+import nl.workingtalent.backend.DTOs.LoginResponseDto;
 import nl.workingtalent.backend.DTOs.SearchAllLoansRequestDTO;
 import nl.workingtalent.backend.DTOs.SearchBookDetailsRequestDto;
+
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.BookCopy;
 import nl.workingtalent.backend.Entities.Loan;
 import nl.workingtalent.backend.Entities.Reservation;
-
 import nl.workingtalent.backend.Entities.User;
+
+import nl.workingtalent.backend.Repositories.IBookCopyRepository;
+import nl.workingtalent.backend.Repositories.IBookRepository;
+import nl.workingtalent.backend.Repositories.ILoanRepository;
+import nl.workingtalent.backend.Repositories.IReservationRepository;
+import nl.workingtalent.backend.Repositories.IUserRepository;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -43,6 +53,9 @@ public class LoanController {
 	@Autowired
 	IBookCopyRepository bookCopyRepo;
 
+	@Autowired
+	IUserRepository userRepo;
+	
 	@Autowired
 	IUserRepository userRepo;
 	
@@ -363,5 +376,37 @@ public class LoanController {
 		reservationRepo.deleteById(reservation.getId());
 		bookCopy.setStatus("loaned");
 		bookCopyRepo.save(bookCopy);
+	}
+	
+	@PostMapping(value = "loan/createNew")
+	public void createNonReservatedLoanViaBookcopy(@RequestBody LoanUserDTO dto) {
+		Optional<User> optionalUser = userRepo.findByFirstNameAndLastName(dto.getFirstName(), dto.getLastName());
+		Optional<BookCopy> optionalBookCopy = bookCopyRepo.findById(dto.getBookCopyId());
+		
+		//BookCopy bookCopy = bookCopyRepo.findById(bookCopyId).get();
+		// Is de kartonen doos leeg
+		if (optionalUser.isEmpty() || optionalBookCopy.isEmpty())
+			return;
+		
+		// Get opent de kartonnen doos
+		User user = optionalUser.get();
+		BookCopy bookCopy = optionalBookCopy.get();
+		
+		Optional<Reservation> optionalReservation = reservationRepo.findByUserIdAndBookId(user.getId(), bookCopy.getBook().getId());
+		
+		if (!optionalReservation.isEmpty()) {
+			Reservation reservation  = optionalReservation.get();
+			reservationRepo.deleteById(reservation.getId());
+		}
+		
+		Loan loan = new Loan();
+		loan.setDateLoaned(LocalDateTime.now());
+		loan.setUser(user);
+		loan.setBookCopy(bookCopy);
+		repo.save(loan);
+		
+		bookCopy.setStatus("loaned");
+		bookCopyRepo.save(bookCopy);
+		
 	}
 }
