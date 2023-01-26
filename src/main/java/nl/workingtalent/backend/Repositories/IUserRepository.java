@@ -18,6 +18,7 @@ public interface IUserRepository extends JpaRepository<User, Long>{
 	List<User> findByActive(boolean active);
 	List<User> findByAdmin(boolean admin);
 	List<User> findByPassword(String password);
+	Optional<User> findByFirstNameAndLastName(String firstName, String lastName);
 	Optional<User> findByEmailAddressAndPassword(String emailAddress, String password);
 	User findByToken(String token);
 	
