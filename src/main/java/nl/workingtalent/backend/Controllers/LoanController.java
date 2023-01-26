@@ -56,8 +56,8 @@ public class LoanController {
 	@Autowired
 	IUserRepository userRepo;
 	
-	@Autowired
-	IUserRepository userRepo;
+	//@Autowired
+	//IUserRepository userRepo;
 	
 	@RequestMapping(value = "loan/all")
 	public List<Loan> findAllLoans()
