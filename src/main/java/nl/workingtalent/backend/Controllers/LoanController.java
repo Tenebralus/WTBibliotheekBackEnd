@@ -255,4 +255,19 @@ public class LoanController {
 		bookCopy.setStatus("loaned");
 		bookCopyRepo.save(bookCopy);
 	}
+	
+	@PostMapping(value = "loan/{copyId}/create")
+	public void createLoanBookcopy(@PathVariable long copyId) {
+		Loan loan = new Loan();
+		BookCopy bookCopy = bookCopyRepo.findById(copyId).get();
+		//Reservation reservation = reservationRepo.findById(reservationId).get();
+		
+		loan.setBookCopy(bookCopy);
+		loan.setDateLoaned(LocalDateTime.now());
+		//loan.setUser(reservation.getUser());
+		
+		repo.save(loan);
+		bookCopy.setStatus("loaned");
+		bookCopyRepo.save(bookCopy);
+	}
 }
