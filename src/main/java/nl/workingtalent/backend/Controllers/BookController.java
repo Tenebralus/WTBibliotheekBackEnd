@@ -170,10 +170,20 @@ public class BookController {
 	public void addTagToBook(@PathVariable long bookId, @RequestBody Tag tag) {
 		Book foundBook = findById(bookId);
 		List<Tag> tags = foundBook.getTags();
-		//Tag newTag = tagRepo.findByName(tag.getName()).get(0);
-		Optional<Tag> optionalTag = tagRepo.findByName(tag.getName());
+		List<Tag> newTag = tagRepo.findByName(tag.getName());
+		//Optional<Tag> optionalTag = tagRepo.findByName(tag.getName());
 		
-		Tag newTag = new Tag();
+		Tag newTag2 = new Tag();
+		
+		if(newTag.size() == 0) {
+			newTag2 = new Tag();
+			newTag2.setName(tag.getName());
+			tagRepo.save(newTag2);
+		}else {
+			newTag2 = newTag.get(0);
+		}
+		
+		/*Tag newTag = new Tag();
 		
 		if (optionalTag.isEmpty()) {
 			newTag = new Tag();
@@ -183,11 +193,11 @@ public class BookController {
 		}else {
 			newTag = optionalTag.get();
 		}
+		*/
 		
 		
-		
-		if(!tags.contains(newTag)) {
-			tags.add(newTag);
+		if(!tags.contains(newTag2)) {
+			tags.add(newTag2);
 		}
 		
 		foundBook.setTags(tags);
@@ -198,7 +208,20 @@ public class BookController {
 	public void addAuthorToBook(@PathVariable long bookId, @RequestBody Author author) {
 		Book foundBook = findById(bookId);
 		List<Author> authors = foundBook.getAuthors();
-		Author newAuthor = authorRepo.findBylastName(author.getLastName()).get(0);
+		//Author newAuthor = authorRepo.findBylastName(author.getLastName()).get(0);
+		Optional<Author> optionalAuthor = authorRepo.findByFirstNameAndLastName(author.getFirstName(),author.getLastName());
+		
+		Author newAuthor = new Author();
+		
+		if (optionalAuthor.isEmpty()) {
+			newAuthor = new Author();
+			newAuthor.setFirstName(author.getFirstName());
+			newAuthor.setLastName(author.getLastName());
+			authorRepo.save(newAuthor);
+			//return;
+		}else {
+			newAuthor = optionalAuthor.get();
+		}
 		
 		if(!authors.contains(newAuthor)){
 			authors.add(newAuthor);
