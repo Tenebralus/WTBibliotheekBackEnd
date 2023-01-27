@@ -183,6 +183,7 @@ public class UserController {
 		foundUser.setPassword("password");
 		foundUser.setDateAccountDeleted(LocalDateTime.now());
 		foundUser.setActive(false);
+		foundUser.setAdmin(false);
 		repo.save(foundUser);
 	}
 	
