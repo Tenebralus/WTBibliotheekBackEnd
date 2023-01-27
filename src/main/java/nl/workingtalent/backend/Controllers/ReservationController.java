@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import nl.workingtalent.backend.DTOs.*;
+import nl.workingtalent.backend.Entities.Loan;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import nl.workingtalent.backend.DTOs.ReservationDTO;
 import nl.workingtalent.backend.DTOs.ReservationRequestDTO;
 import nl.workingtalent.backend.DTOs.ReservationResponseDTO;
-import nl.workingtalent.backend.DTOs.ReservationUserDTO;
+//import nl.workingtalent.backend.DTOs.ReservationUserDTO;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Entities.User;
@@ -91,15 +95,15 @@ public class ReservationController {
 	public List<Reservation> searchAllUserReservations(@PathVariable String keyword) {
 		ModelMapper modelMapper = new ModelMapper();
 		
-		modelMapper.typeMap(Reservation.class, ReservationUserDTO.class).addMappings(mapper -> {
+		modelMapper.typeMap(Reservation.class, ReservationDTO.class).addMappings(mapper -> {
 			mapper.map(src -> src.getUser().getFirstName(), 
-					ReservationUserDTO::setFirstName);
+					ReservationDTO::setFirstName);
 			mapper.map(src -> src.getUser().getLastName(), 
-					ReservationUserDTO::setLastName);
+					ReservationDTO::setLastName);
 			mapper.map(src -> src.getBook().getBookcopies(), 
-					ReservationUserDTO::setBookcopies);
+					ReservationDTO::setBookcopies);
 			mapper.map(src->src.getBook().getAuthors(),
-					ReservationUserDTO::setAuthors);
+					ReservationDTO::setAuthors);
 		});
 		
 		List<Reservation> reservations = repo.searchPerUser(keyword)
@@ -107,6 +111,32 @@ public class ReservationController {
 				.map(reserv -> modelMapper.map(reserv, Reservation.class))
 				.collect(Collectors.toList());
 		
+		return reservations;
+	}
+
+	@GetMapping(value = "reservation/user/personal/search/{keyword}")
+	public List<Reservation> searchUserReservations(@PathVariable String keyword, @RequestHeader("token") String token) {
+		ModelMapper modelMapper = new ModelMapper();
+
+		User user = userRepo.findByToken(token);
+
+		modelMapper.typeMap(Reservation.class, ReservationUserDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getUser().getFirstName(),
+					ReservationUserDTO::setFirstName);
+			mapper.map(src -> src.getUser().getLastName(),
+					ReservationUserDTO::setLastName);
+			mapper.map(src -> src.getBook().getBookcopies(),
+					ReservationUserDTO::setBookcopies);
+			mapper.map(src->src.getBook().getAuthors(),
+					ReservationUserDTO::setAuthors);
+		});
+
+
+		List<Reservation> reservations = repo.searchIndividual(keyword, user.getFirstName())
+				.stream()
+				.map(reserv -> modelMapper.map(reserv, Reservation.class))
+				.collect(Collectors.toList());
+
 		return reservations;
 	}
 	
@@ -208,6 +238,37 @@ public class ReservationController {
 				.collect(Collectors.toList());
 		
 		 return reservations;
+	}
+
+	@GetMapping(value="reservation/dto/user")
+	public List<ReservationDTO> findReservationDTOsByUser(@RequestHeader("token") String token) {
+		ModelMapper modelMapper = new ModelMapper();
+
+		User user = userRepo.findByToken(token);
+
+		modelMapper.typeMap(Reservation.class, ReservationDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getUser().getFirstName(),
+					ReservationDTO::setFirstName);
+			mapper.map(src -> src.getUser().getLastName(),
+					ReservationDTO::setLastName);
+			mapper.map(src -> src.getBook().getAuthors(),
+					ReservationDTO::setAuthors);
+			mapper.map(src -> src.getBook().getBookcopies(),
+					ReservationDTO::setBookcopies);
+		});
+
+		// Is de kartonen doos leeg
+//		if (user.isEmpty())
+//			return findLoanDTOsByBookCopyId(false);
+//
+		List<Reservation> allReservations = repo.findByUserId(user.getId());
+
+		List<ReservationDTO> reservations = allReservations
+				.stream()
+				.map(reservation -> modelMapper.map(reservation, ReservationDTO.class))
+				.collect(Collectors.toList());
+
+		return reservations;
 	}
 	
 

@@ -103,6 +103,25 @@ public class LoanController {
 
 		return loans;
 	}
+
+	@RequestMapping(value = "loan/search/user/{keyword}")
+	public List<LoanDTO> searchLoansByUser(@PathVariable String keyword, @RequestHeader("token") String token) {
+		ModelMapper modelMapper = new ModelMapper();
+
+		User user = userRepo.findByToken(token);
+
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(),
+					LoanDTO::setAuthors);
+		});
+
+		List<LoanDTO> loans = repo.searchIndividual(keyword, user.getFirstName())
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+
+		return loans;
+	}
 	
 	@RequestMapping(value = "loan/search/bookdetails")
 	public List<LoanDTO> searchBookDetails(@RequestBody SearchBookDetailsRequestDto dto) {
