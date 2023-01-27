@@ -113,7 +113,7 @@ public class BookController {
 	public void createBook(@RequestBody Book book)
 	{
 		//book.setUrlImage("https://covers.openlibrary.org/b/ISBN/"+book.getIsbn()+"-S.jpg");
-		//repo.save(book);
+		repo.save(book);
 		
 		BookCopy bookCopy = new BookCopy();
 		bookCopy.setBook(book);
