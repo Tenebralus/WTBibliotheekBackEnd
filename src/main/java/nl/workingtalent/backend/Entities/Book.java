@@ -36,8 +36,8 @@ public class Book {
 	@ManyToMany
 	private List<Tag> tags;
 	
-	@Column(length=80, nullable = false)
-	private String urlImage;
+	//@Column(length=80, nullable = false)
+	//private String urlImage;
 	
 	@OneToMany(mappedBy="book")
 	@JsonIgnore
@@ -49,13 +49,13 @@ public class Book {
 	@ManyToMany
 	private List<Author> authors;
 	
-	public String getUrlImage() {
+	/*public String getUrlImage() {
 		return urlImage;
 	}
 
 	public void setUrlImage(String urlImage) {
 		this.urlImage = urlImage;
-	}
+	}*/
 
 	public long getId() {
 		return id;
