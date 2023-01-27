@@ -1,5 +1,7 @@
 package nl.workingtalent.backend.Controllers;
 
+import java.util.Optional;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.EmailService;
 import nl.workingtalent.backend.DTOs.EmailDTO;
+import nl.workingtalent.backend.Entities.User;
+import nl.workingtalent.backend.Repositories.IUserRepository;
 
 //import de.svenjacobs.loremipsum.LoremIpsum;
 
@@ -21,20 +25,37 @@ public class EmailController {
 
 	@Autowired
 	private EmailService emailService;
-
+	
+	@Autowired
+	private IUserRepository userRepo;
+	
+	/** Functie om een mail te versturen, momenteel zo opgesteld dat het hotmail account van de bibliotheek mail adres de verstuurder is.
+	 * 	Verstuurder details staan in application.properties. */
 	@PostMapping("/sendemail")
 	public EmailDTO sendEmail(@RequestBody EmailDTO dto) {
-		dto.setVerificationCode(GenerateVerificationCode());
-		dto.setText("Je code is: " + dto.getVerificationCode() + ".");
-		dto.setTitle("Verificatie Code voor WT bibliotheek");
-		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", dto.getReceiver(), dto.getTitle(), dto.getText());
+		
+		Optional<User> user = userRepo.findByEmailAddress(dto.getReceiver());
+		if(user.isEmpty())
+		{
+			dto.setSuccess(false);
+		}
+		else
+		{
+			dto.setSuccess(true);
+			dto.setVerificationCode(GenerateVerificationCode());
+			dto.setText("Je code is: " + dto.getVerificationCode() + ".");
+			dto.setTitle("Verificatie Code voor WT bibliotheek");
+			this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", dto.getReceiver(), dto.getTitle(), dto.getText());
+		}
 		
 		return dto;
 	}
 	
+	/** Functie om snel een test uit te voeren met het hotmail account van de bibliotheek mail adres,
+	 *	bij de tweede parameter het mail adres invoeren waar de mail naartoe gestuurd moet worden. */
 	@GetMapping("/sendemailtest")
 	public void sendEmailTest() {
-		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", "legendariuszz@hotmail.com", "titel", "test");
+		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", "naam@hotmail.com", "titel", "test");
 	}
 	
 	private String GenerateVerificationCode(){

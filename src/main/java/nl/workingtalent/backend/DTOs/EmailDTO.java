@@ -5,6 +5,7 @@ public class EmailDTO {
 	private String title;
 	private String text;
 	private String verificationCode;
+	private boolean success;
 	
 	public String getReceiver() {
 		return receiver;
@@ -29,6 +30,12 @@ public class EmailDTO {
 	}
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
+	}
+	public boolean isSuccess() {
+		return success;
+	}
+	public void setSuccess(boolean success) {
+		this.success = success;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package nl.workingtalent.backend.Controllers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,26 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
+import nl.workingtalent.backend.DTOs.BookDetailsDTO;
+import nl.workingtalent.backend.DTOs.LoanDTO;
+import nl.workingtalent.backend.DTOs.LoanUserDTO;
+import nl.workingtalent.backend.DTOs.LoginRequestDto;
+import nl.workingtalent.backend.DTOs.LoginResponseDto;
+import nl.workingtalent.backend.DTOs.SearchAllLoansRequestDTO;
+import nl.workingtalent.backend.DTOs.SearchBookDetailsRequestDto;
+
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.BookCopy;
 import nl.workingtalent.backend.Entities.Loan;
 import nl.workingtalent.backend.Entities.Reservation;
-
 import nl.workingtalent.backend.Entities.User;
+
+import nl.workingtalent.backend.Repositories.IBookCopyRepository;
+import nl.workingtalent.backend.Repositories.IBookRepository;
+import nl.workingtalent.backend.Repositories.ILoanRepository;
+import nl.workingtalent.backend.Repositories.IReservationRepository;
+import nl.workingtalent.backend.Repositories.IUserRepository;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -40,6 +55,9 @@ public class LoanController {
 
 	@Autowired
 	IUserRepository userRepo;
+	
+	//@Autowired
+	//IUserRepository userRepo;
 	
 	@RequestMapping(value = "loan/all")
 	public List<Loan> findAllLoans()
@@ -110,6 +128,40 @@ public class LoanController {
 		ModelMapper modelMapper = new ModelMapper();
 		
 		List<LoanDTO> loans = repo.searchBookDetailsByUser(dto.getKeyword(), dto.getBookId())
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+		
+		return loans;
+	}
+	
+	@RequestMapping(value = "loan/search/current")
+	public List<LoanDTO> searchCurrentLoans(@RequestBody SearchAllLoansRequestDTO dto) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(), 
+					LoanDTO::setAuthors);
+		});
+		
+		List<LoanDTO> loans = repo.searchAllCurrent(dto.getKeyword())
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+		
+		return loans;
+	}
+	
+	@RequestMapping(value = "loan/search/old")
+	public List<LoanDTO> searchOldLoans(@RequestBody SearchAllLoansRequestDTO dto) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(), 
+					LoanDTO::setAuthors);
+		});
+		
+		List<LoanDTO> loans = repo.searchAllOld(dto.getKeyword())
 				.stream()
 				.map(loan -> modelMapper.map(loan, LoanDTO.class))
 				.collect(Collectors.toList());
@@ -210,6 +262,40 @@ public class LoanController {
 		return loans;
 	}
 	
+	@RequestMapping(value="loan/dto/all/current")
+	public List<LoanDTO> findAllCurrentLoanDTOs() {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(), 
+					LoanDTO::setAuthors);
+		});
+		
+		List<LoanDTO> loans = repo.findByDateReturned(null)
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+		
+		return loans;
+	}
+	
+	@RequestMapping(value="loan/dto/all/old")
+	public List<LoanDTO> findAllOldLoanDTOs() {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.typeMap(Loan.class, LoanDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getBookCopy().getBook().getAuthors(), 
+					LoanDTO::setAuthors);
+		});
+		
+		List<LoanDTO> loans = repo.findByDateReturnedNotNull()
+				.stream()
+				.map(loan -> modelMapper.map(loan, LoanDTO.class))
+				.collect(Collectors.toList());
+		
+		return loans;
+	}
+	
 	@RequestMapping(value="loan/dto/book/{bookId}")
 	public List<LoanDTO> findLoanDTOsByBookId(@PathVariable Long bookId) {
 		ModelMapper modelMapper = new ModelMapper();
@@ -307,6 +393,49 @@ public class LoanController {
 		
 		repo.save(loan);
 		reservationRepo.deleteById(reservation.getId());
+		bookCopy.setStatus("loaned");
+		bookCopyRepo.save(bookCopy);
+	}
+	
+
+	@PostMapping(value = "loan/{copyId}/create")
+	public void createLoanBookcopy(@PathVariable long copyId) {
+		Loan loan = new Loan();
+		BookCopy bookCopy = bookCopyRepo.findById(copyId).get();
+		//Reservation reservation = reservationRepo.findById(reservationId).get();
+		
+		loan.setBookCopy(bookCopy);
+		loan.setDateLoaned(LocalDateTime.now());
+		//loan.setUser(reservation.getUser());
+		
+		repo.save(loan);
+		bookCopy.setStatus("loaned");
+		bookCopyRepo.save(bookCopy);
+	}
+	
+	
+	@PostMapping(value = "loan/createNew")
+	public void createNonReservatedLoanViaBookcopy(@RequestBody LoanUserDTO dto) {
+		Optional<User> optionalUser = userRepo.findByFirstNameAndLastName(dto.getFirstName(), dto.getLastName());
+		Optional<BookCopy> optionalBookCopy = bookCopyRepo.findById(dto.getBookCopyId());
+		//BookCopy bookCopy = bookCopyRepo.findById(bookCopyId).get();
+		// Is de kartonen doos leeg
+		if (optionalUser.isEmpty() || optionalBookCopy.isEmpty())
+			return;
+		// Get opent de kartonnen doos
+		User user = optionalUser.get();
+		BookCopy bookCopy = optionalBookCopy.get();
+		Optional<Reservation> optionalReservation = reservationRepo.findByUserIdAndBookId(user.getId(), bookCopy.getBook().getId());
+		if (!optionalReservation.isEmpty()) {
+			Reservation reservation  = optionalReservation.get();
+			reservationRepo.deleteById(reservation.getId());
+		}
+		Loan loan = new Loan();
+		loan.setDateLoaned(LocalDateTime.now());
+		loan.setUser(user);
+		loan.setBookCopy(bookCopy);
+		repo.save(loan);
+		
 		bookCopy.setStatus("loaned");
 		bookCopyRepo.save(bookCopy);
 	}

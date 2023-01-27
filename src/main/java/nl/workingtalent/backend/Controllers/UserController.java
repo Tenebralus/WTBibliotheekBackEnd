@@ -173,6 +173,7 @@ public class UserController {
 		foundUser.setFirstName("anon");
 		foundUser.setLastName("anon");
 		foundUser.setEmailAddress("anon@wt.nl");
+		foundUser.setPassword("password");
 		foundUser.setDateAccountDeleted(LocalDateTime.now());
 		foundUser.setActive(false);
 		repo.save(foundUser);
@@ -271,5 +272,27 @@ public class UserController {
 		}
 	}
 	
+	/** Returns user type: <br>
+	 *  0 = regular user <br>
+	 *  1 = admin <br>
+	 *  -1 = user does not exist */
+	@PostMapping(value = "user/usertype")
+	public int findUserTypeOfUser(@RequestHeader("Authentication") String token)
+	{
+		User user = repo.findByToken(token);
+		
+		if(user != null)
+		{
+			if (!user.isAdmin())
+			{
+				return 0;
+			}
+			else if(user.isAdmin())
+			{
+				return 1;
+			}
+		}
+		return -1;
+	}
 
 }

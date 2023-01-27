@@ -11,6 +11,21 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import nl.workingtalent.backend.DTOs.ReservationDTO;
+import nl.workingtalent.backend.DTOs.ReservationRequestDTO;
+import nl.workingtalent.backend.DTOs.ReservationResponseDTO;
+//import nl.workingtalent.backend.DTOs.ReservationUserDTO;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Entities.User;
@@ -80,15 +95,15 @@ public class ReservationController {
 	public List<Reservation> searchAllUserReservations(@PathVariable String keyword) {
 		ModelMapper modelMapper = new ModelMapper();
 		
-		modelMapper.typeMap(Reservation.class, ReservationUserDTO.class).addMappings(mapper -> {
+		modelMapper.typeMap(Reservation.class, ReservationDTO.class).addMappings(mapper -> {
 			mapper.map(src -> src.getUser().getFirstName(), 
-					ReservationUserDTO::setFirstName);
+					ReservationDTO::setFirstName);
 			mapper.map(src -> src.getUser().getLastName(), 
-					ReservationUserDTO::setLastName);
+					ReservationDTO::setLastName);
 			mapper.map(src -> src.getBook().getBookcopies(), 
-					ReservationUserDTO::setBookcopies);
+					ReservationDTO::setBookcopies);
 			mapper.map(src->src.getBook().getAuthors(),
-					ReservationUserDTO::setAuthors);
+					ReservationDTO::setAuthors);
 		});
 		
 		List<Reservation> reservations = repo.searchPerUser(keyword)
