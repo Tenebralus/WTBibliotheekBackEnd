@@ -170,7 +170,11 @@ public class BookController {
 		Book foundBook = findById(bookId);
 		List<Tag> tags = foundBook.getTags();
 		Tag newTag = tagRepo.findByName(tag.getName()).get(0);
-		tags.add(newTag);
+		
+		if(!tags.contains(newTag)) {
+			tags.add(newTag);
+		}
+		
 		foundBook.setTags(tags);
 		repo.save(foundBook);
 	}
@@ -180,7 +184,11 @@ public class BookController {
 		Book foundBook = findById(bookId);
 		List<Author> authors = foundBook.getAuthors();
 		Author newAuthor = authorRepo.findBylastName(author.getLastName()).get(0);
-		authors.add(newAuthor);
+		
+		if(!authors.contains(newAuthor)){
+			authors.add(newAuthor);
+		}
+		
 		foundBook.setAuthors(authors);
 		repo.save(foundBook);
 	}
