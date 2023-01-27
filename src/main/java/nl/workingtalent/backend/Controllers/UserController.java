@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import nl.workingtalent.backend.EmailService;
 import nl.workingtalent.backend.DTOs.ChangePasswordRequestDto;
 import nl.workingtalent.backend.DTOs.LoginRequestDto;
 import nl.workingtalent.backend.DTOs.LoginResponseDto;
@@ -30,6 +32,9 @@ public class UserController {
 	
 	@Autowired
 	IUserRepository repo;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	/*@RequestMapping(value = "user/all")
 	public List<User> findAllUsers()
@@ -127,7 +132,9 @@ public class UserController {
 	@PostMapping(value = "user/create")
 	public void createUser(@RequestBody User user)
 	{
-		String password = "password";
+		String password = String.valueOf((int)Math.round(Math.random() * 100000) +10000) + "WT";
+		String text = "Dit is je eerste login code: "+password+".";
+		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", user.getEmailAddress(), "Eerste login credentials", text);
 		String pwHash = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 		user.setPassword(pwHash);
 		repo.save(user);
