@@ -31,7 +31,7 @@ public class User{
 	@Column(length = 50, nullable = false)
 	private String lastName;
 	
-	@Column(length = 100, nullable = false)
+	@Column(length = 100, nullable = true, unique = true)
 	private String emailAddress;
 	
 	@Column(length = 200, nullable = false)

@@ -42,7 +42,6 @@ public class UserController {
 		return repo.findAll();
 	}*/
 	
-
 	@GetMapping("user/all")
 	public List<User> getAllUsers(@RequestHeader("Authentication") String token) {
 		// Find user by token
@@ -130,14 +129,20 @@ public class UserController {
 	}
 	
 	@PostMapping(value = "user/create")
-	public void createUser(@RequestBody User user)
+	public boolean createUser(@RequestBody User user)
 	{
+		Optional<User> optional = repo.findByEmailAddress(user.getEmailAddress());
+		// als die niet leeg is, betaat de email al, dus niet user aanmaken
+		if (!optional.isEmpty()) {
+			return false;
+		}
 		String password = String.valueOf((int)Math.round(Math.random() * 100000) +10000) + "WT";
 		String text = "Dit is je eerste login code: "+password+".";
 		this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", user.getEmailAddress(), "Eerste login credentials", text);
 		String pwHash = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 		user.setPassword(pwHash);
 		repo.save(user);
+		return true;
 	}
 	
 	@PutMapping(value = "user/update/{id}")
@@ -150,19 +155,6 @@ public class UserController {
 		if(user.getEmailAddress() != null && user.getEmailAddress().length() != 0) {foundUser.setEmailAddress(user.getEmailAddress());}
 		if(user.getPassword() != null && user.getPassword().length() != 0) {foundUser.setPassword(user.getPassword());}
 		foundUser.setAdmin(user.isAdmin());
-		
-		//foundUser.setLastName(user.getLastName());
-		//foundUser.setEmailAddress(user.getEmailAddress());
-		//foundUser.setPassword(user.getPassword());
-		
-		//foundUser.setDateAccountCreated(user.getDateAccountCreated());
-		//you probably do not want to edit the creation date
-		
-		//foundUser.setDateAccountDeleted(user.getDateAccountDeleted());
-		//foundUser.setActive(user.isActive());
-		//foundUser.setLoans(user.getLoans());
-		//foundUser.setAdmin(user.isAdmin());
-		
 		repo.save(foundUser);
 	}
 	
@@ -170,16 +162,9 @@ public class UserController {
 	public void anonymizeUser(@PathVariable long id)
 	{
 		User foundUser = findById(id);
-		
-		//if(user.getFirstName() != null && user.getFirstName().length() != 0) {foundUser.setFirstName("anon");}
-		//if(user.getLastName() != null && user.getLastName().length() != 0) {foundUser.setLastName("anon");}
-		//if(user.getEmailAddress() != null && user.getEmailAddress().length() != 0) {foundUser.setEmailAddress("anon@wt.nl");}
-		//if(user.getPassword() != null && user.getPassword().length() != 0) {foundUser.setPassword("password");}
-		//foundUser.setAdmin(user.isAdmin());
-		
 		foundUser.setFirstName("anon");
 		foundUser.setLastName("anon");
-		foundUser.setEmailAddress("anon@wt.nl");
+		foundUser.setEmailAddress(null);
 		foundUser.setPassword("password");
 		foundUser.setDateAccountDeleted(LocalDateTime.now());
 		foundUser.setActive(false);
