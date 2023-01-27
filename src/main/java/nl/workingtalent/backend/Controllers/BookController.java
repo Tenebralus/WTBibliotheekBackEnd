@@ -2,6 +2,7 @@ package nl.workingtalent.backend.Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -169,7 +170,21 @@ public class BookController {
 	public void addTagToBook(@PathVariable long bookId, @RequestBody Tag tag) {
 		Book foundBook = findById(bookId);
 		List<Tag> tags = foundBook.getTags();
-		Tag newTag = tagRepo.findByName(tag.getName()).get(0);
+		//Tag newTag = tagRepo.findByName(tag.getName()).get(0);
+		Optional<Tag> optionalTag = tagRepo.findByName(tag.getName());
+		
+		Tag newTag = new Tag();
+		
+		if (optionalTag.isEmpty()) {
+			newTag = new Tag();
+			newTag.setName(tag.getName());
+			tagRepo.save(newTag);
+			//return;
+		}else {
+			newTag = optionalTag.get();
+		}
+		
+		
 		
 		if(!tags.contains(newTag)) {
 			tags.add(newTag);
