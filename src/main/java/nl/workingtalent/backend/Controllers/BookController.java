@@ -112,8 +112,8 @@ public class BookController {
 	@PostMapping(value = "book/create")
 	public void createBook(@RequestBody Book book)
 	{
-		book.setUrlImage("https://covers.openlibrary.org/b/ISBN/"+book.getIsbn()+"-S.jpg");
-		repo.save(book);
+		//book.setUrlImage("https://covers.openlibrary.org/b/ISBN/"+book.getIsbn()+"-S.jpg");
+		//repo.save(book);
 		
 		BookCopy bookCopy = new BookCopy();
 		bookCopy.setBook(book);
