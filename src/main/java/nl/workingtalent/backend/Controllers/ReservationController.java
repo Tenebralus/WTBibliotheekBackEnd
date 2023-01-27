@@ -120,15 +120,15 @@ public class ReservationController {
 
 		User user = userRepo.findByToken(token);
 
-		modelMapper.typeMap(Reservation.class, ReservationUserDTO.class).addMappings(mapper -> {
+		modelMapper.typeMap(Reservation.class, ReservationDTO.class).addMappings(mapper -> {
 			mapper.map(src -> src.getUser().getFirstName(),
-					ReservationUserDTO::setFirstName);
+					ReservationDTO::setFirstName);
 			mapper.map(src -> src.getUser().getLastName(),
-					ReservationUserDTO::setLastName);
+					ReservationDTO::setLastName);
 			mapper.map(src -> src.getBook().getBookcopies(),
-					ReservationUserDTO::setBookcopies);
+					ReservationDTO::setBookcopies);
 			mapper.map(src->src.getBook().getAuthors(),
-					ReservationUserDTO::setAuthors);
+					ReservationDTO::setAuthors);
 		});
 
 
