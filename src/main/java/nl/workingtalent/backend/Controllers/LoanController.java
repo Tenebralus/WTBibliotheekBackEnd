@@ -303,7 +303,7 @@ public class LoanController {
 	}
 
 	@GetMapping(value="loan/dto/user")
-	public List<LoanDTO> findLoanDTOsByUser(@RequestHeader("token") String token) {
+	public List<LoanDTO> findLoanDTOsByUser(@RequestHeader("Authentication") String token) {
 		ModelMapper modelMapper = new ModelMapper();
 
 
