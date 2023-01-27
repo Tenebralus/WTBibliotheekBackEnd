@@ -173,6 +173,7 @@ public class UserController {
 		foundUser.setFirstName("anon");
 		foundUser.setLastName("anon");
 		foundUser.setEmailAddress("anon@wt.nl");
+		foundUser.setPassword("password");
 		foundUser.setDateAccountDeleted(LocalDateTime.now());
 		foundUser.setActive(false);
 		repo.save(foundUser);
