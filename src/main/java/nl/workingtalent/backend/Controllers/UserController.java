@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.EmailService;
 import nl.workingtalent.backend.DTOs.ChangePasswordRequestDto;
+import nl.workingtalent.backend.DTOs.ChangePasswordResponseDTO;
 import nl.workingtalent.backend.DTOs.LoginRequestDto;
 import nl.workingtalent.backend.DTOs.LoginResponseDto;
 import nl.workingtalent.backend.Entities.Loan;
@@ -229,7 +230,7 @@ public class UserController {
  }
 	
 	@PutMapping("user/changepassword")
-	public boolean changePassword(@RequestHeader("Authentication") String token, @RequestBody ChangePasswordRequestDto dto) {
+	public ChangePasswordResponseDTO changePassword(@RequestHeader("Authentication") String token, @RequestBody ChangePasswordRequestDto dto) {
 		User user = repo.findByToken(token);
 		
 		String currentPassword = dto.getCurrentPassword();
@@ -239,14 +240,21 @@ public class UserController {
 		BCrypt.Result result = BCrypt.verifyer().verify(currentPassword.toCharArray(), user.getPassword());
 		
 		if (!result.verified)
-			return false;
+			return new ChangePasswordResponseDTO(false, "Het oude wachtwoord is fout ingevuld");
+		
+		//controleer of nieuw wachtwoord hetzelfde
+		BCrypt.Result resultNewPw = BCrypt.verifyer().verify(newPassword.toCharArray(), user.getPassword());
+		if (resultNewPw.verified)
+			return new ChangePasswordResponseDTO(false, "Het nieuwe wachtwoord komt overeen met het oude wachtwoord");
+		
+
 		
 		// Encrypt het nieuwe password
 		String pwHash = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());
 		user.setPassword(pwHash);
 		repo.save(user);
 		
-		return true;	
+		return new ChangePasswordResponseDTO(true, "");	
 	}
 	
 	@GetMapping("users/loans/{id}")
