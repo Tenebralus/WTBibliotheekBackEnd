@@ -114,6 +114,28 @@ public class BookController {
 	public void createBook(@RequestBody Book book)
 	{
 		//book.setUrlImage("https://covers.openlibrary.org/b/ISBN/"+book.getIsbn()+"-S.jpg");
+		
+		/*List<Tag> tags = book.getTags();
+		System.out.println(tags.size());
+		for(Tag tag : tags) {
+			System.out.println(tag.getId());
+			Optional<Tag> optionalTag = tagRepo.findById(tag.getId());
+			
+			if (optionalTag.isEmpty()) {
+				System.out.println("test");
+			}
+			
+			Tag newTag2 = new Tag();
+			
+			if(newTag.size() == 0) {
+				newTag2 = new Tag();
+				newTag2.setName(tag.getName());
+				tagRepo.save(newTag2);
+				
+			}
+		}*/
+		
+		
 		repo.save(book);
 		
 		BookCopy bookCopy = new BookCopy();
@@ -130,6 +152,7 @@ public class BookController {
 		
 		bookcopyRepo.save(bookCopy);
 		repo.save(book);
+		
 	}
 
 	@PutMapping(value = "book/update/{id}")
