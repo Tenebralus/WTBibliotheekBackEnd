@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.DTOs.BookCopyDetailsDTO;
+import nl.workingtalent.backend.DTOs.BookCreateResponseDTO;
 import nl.workingtalent.backend.DTOs.BookDetailsDTO;
 import nl.workingtalent.backend.DTOs.LoanDTO;
 import nl.workingtalent.backend.Entities.Author;
@@ -111,7 +112,7 @@ public class BookController {
 	}
 	
 	@PostMapping(value = "book/create")
-	public void createBook(@RequestBody Book book)
+	public BookCreateResponseDTO createBook(@RequestBody Book book)
 	{
 		//book.setUrlImage("https://covers.openlibrary.org/b/ISBN/"+book.getIsbn()+"-S.jpg");
 		
@@ -136,6 +137,12 @@ public class BookController {
 		}*/
 		
 		
+		if(repo.findByTitle(book.getTitle()).size() != 0) {
+			return new BookCreateResponseDTO(false, "A book with this title already exist");
+		}else if (repo.findByIsbn(book.getIsbn()).size() != 0) {
+			return new BookCreateResponseDTO(false, "A book with this isbn number already exists");
+		}
+		
 		repo.save(book);
 		
 		BookCopy bookCopy = new BookCopy();
@@ -153,6 +160,7 @@ public class BookController {
 		bookcopyRepo.save(bookCopy);
 		repo.save(book);
 		
+		return new BookCreateResponseDTO(true, "");
 	}
 
 	@PutMapping(value = "book/update/{id}")
