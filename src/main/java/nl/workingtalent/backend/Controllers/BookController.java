@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.workingtalent.backend.DTOs.BookCopyDetailsDTO;
+import nl.workingtalent.backend.DTOs.BookCreateRequestDTO;
 import nl.workingtalent.backend.DTOs.BookCreateResponseDTO;
 import nl.workingtalent.backend.DTOs.BookDetailsDTO;
 import nl.workingtalent.backend.DTOs.LoanDTO;
+import nl.workingtalent.backend.DTOs.LoginRequestDto;
+import nl.workingtalent.backend.DTOs.LoginResponseDto;
 import nl.workingtalent.backend.Entities.Author;
 import nl.workingtalent.backend.Entities.Book;
 import nl.workingtalent.backend.Entities.BookCopy;
@@ -112,30 +115,11 @@ public class BookController {
 	}
 	
 	@PostMapping(value = "book/create")
-	public BookCreateResponseDTO createBook(@RequestBody Book book)
-	{
-		//book.setUrlImage("https://covers.openlibrary.org/b/ISBN/"+book.getIsbn()+"-S.jpg");
-		
-		/*List<Tag> tags = book.getTags();
-		System.out.println(tags.size());
-		for(Tag tag : tags) {
-			System.out.println(tag.getId());
-			Optional<Tag> optionalTag = tagRepo.findById(tag.getId());
+	public BookCreateResponseDTO createBook(@RequestBody BookCreateRequestDTO dto /*@RequestBody Book book*/){	
 			
-			if (optionalTag.isEmpty()) {
-				System.out.println("test");
-			}
-			
-			Tag newTag2 = new Tag();
-			
-			if(newTag.size() == 0) {
-				newTag2 = new Tag();
-				newTag2.setName(tag.getName());
-				tagRepo.save(newTag2);
-				
-			}
-		}*/
-		
+		Book book = new Book();
+		book.setTitle(dto.getTitle());
+		book.setIsbn(dto.getIsbn());
 		
 		if(repo.findByTitle(book.getTitle()).size() != 0) {
 			return new BookCreateResponseDTO(false, "A book with this title already exist");
@@ -143,6 +127,65 @@ public class BookController {
 			return new BookCreateResponseDTO(false, "A book with this isbn number already exists");
 		}
 		
+		List<Author> authors = new ArrayList<Author>();
+		
+		for (String author : dto.getAuthors()) {
+			String AuthorFirstName = "";
+			String AuthorLastName = "";
+			
+			int i = 0;
+			for (String name : author.split(" ", 0)) {
+				if(i == 0) {
+					AuthorFirstName = name;
+				}else if(i > 1){
+					AuthorLastName = AuthorLastName + " " + name;
+				}else {
+					AuthorLastName = AuthorLastName + name;
+				}
+				i++;
+			}
+			
+			System.out.println(AuthorFirstName + " " + AuthorLastName);
+			Optional<Author> optionaAuthor = authorRepo.findByFirstNameAndLastName(AuthorFirstName, AuthorLastName);
+			
+			Author newAuthor;
+			if (optionaAuthor.isEmpty()) {
+				newAuthor = new Author();
+				newAuthor.setFirstName(AuthorFirstName);
+				newAuthor.setLastName(AuthorLastName);
+				authorRepo.save(newAuthor);
+				authors.add(newAuthor);
+			}else {
+				newAuthor = optionaAuthor.get();
+				if(!authors.contains(newAuthor)) {
+					authors.add(newAuthor);
+				}
+			}
+		}
+		
+		book.setAuthors(authors);
+
+		List<Tag> tags = new ArrayList<Tag>();
+		
+		for (String tag : dto.getTags()) {		
+			List<Tag> foundTags = tagRepo.findByName(tag);
+			
+			Tag newTag;
+			if(foundTags.size() == 0) {
+				newTag = new Tag();
+				newTag.setName(tag);
+				tagRepo.save(newTag);
+				tags.add(newTag);
+			}else {
+				newTag = foundTags.get(0);
+				if(!tags.contains(newTag)) {
+					tags.add(newTag);
+				}
+			}
+		}
+			
+		book.setTags(tags);
+			
 		repo.save(book);
 		
 		BookCopy bookCopy = new BookCopy();
