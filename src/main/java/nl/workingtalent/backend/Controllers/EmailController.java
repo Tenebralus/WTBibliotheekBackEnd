@@ -43,7 +43,7 @@ public class EmailController {
 		{
 			dto.setSuccess(true);
 			dto.setVerificationCode(GenerateVerificationCode());
-			dto.setText("Je code is: " + dto.getVerificationCode() + ".");
+			dto.setText("Je tijdelijke code om in te loggen is: \n" + dto.getVerificationCode() + " . \n \n \n Als je niet een nieuw wachtwoord hebt aangevraagd, kun je deze email negeren.");
 			dto.setTitle("Verificatie Code voor WT bibliotheek");
 			this.emailService.sendSimpleMessage("bibliotheekwt@hotmail.com", dto.getReceiver(), dto.getTitle(), dto.getText());
 		}
