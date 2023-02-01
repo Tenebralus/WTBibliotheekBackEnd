@@ -10,6 +10,8 @@ public class BookCreateRequestDTO {
 	String[] authors;
 	
 	List<String> tags;
+	
+	int bookCopyNumber;
 
 	public String getTitle() {
 		return title;
@@ -42,6 +44,15 @@ public class BookCreateRequestDTO {
 	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}
+
+	public int getBookCopyNumber() {
+		return bookCopyNumber;
+	}
+
+	public void setBookCopyNumber(int bookCopyNumber) {
+		this.bookCopyNumber = bookCopyNumber;
+	}
+	
 	
 	
 }

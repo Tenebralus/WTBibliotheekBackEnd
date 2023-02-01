@@ -188,19 +188,24 @@ public class BookController {
 			
 		repo.save(book);
 		
-		BookCopy bookCopy = new BookCopy();
-		bookCopy.setBook(book);
 		List<BookCopy> copies = new ArrayList<BookCopy>();
-		int size = copies.size();
-		copies.add(bookCopy);
+		for(int i = 0; i < dto.getBookCopyNumber(); i++) {
+			BookCopy bookCopy = new BookCopy();
+			bookCopy.setBook(book);
+			
+			//int size = copies.size();
+			copies.add(bookCopy);
+			//book.setBookcopies(copies);
+			
+			// Voeg een exemplaar toe op basis van de bestaande exemplaren
+			bookCopy.setBookCopyNr(i + 1);
+			bookCopy.setBook(book);
+			bookCopy.setStatus("available");
+			
+			bookcopyRepo.save(bookCopy);
+		}
 		book.setBookcopies(copies);
 		
-		// Voeg een exemplaar toe op basis van de bestaande exemplaren
-		bookCopy.setBookCopyNr(size + 1);
-		bookCopy.setBook(book);
-		bookCopy.setStatus("available");
-		
-		bookcopyRepo.save(bookCopy);
 		repo.save(book);
 		
 		return new BookCreateResponseDTO(true, "");
