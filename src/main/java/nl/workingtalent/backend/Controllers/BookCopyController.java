@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import nl.workingtalent.backend.DTOs.BookCopyCreateRequestDTO;
 import nl.workingtalent.backend.DTOs.BookCopyDTO;
 import nl.workingtalent.backend.DTOs.BookCopyDetailsDTO;
 import nl.workingtalent.backend.DTOs.BookCopyUpdateReturnDTO;
@@ -102,10 +104,29 @@ public class BookCopyController {
 		List<BookCopy> copies = book.getBookcopies();
 		int size = copies.size();
 		// Voeg een exemplaar toe op basis van de bestaande exemplaren
+		System.out.println(size);
 		bookCopy.setBookCopyNr(size + 1);
 		bookCopy.setBook(book);
 		bookCopy.setStatus("available");
 		repo.save(bookCopy);
+	}
+	
+	@PostMapping(value = "book/createbookcopy")
+	public void createBookCopyViaBook2(@RequestBody BookCopyCreateRequestDTO dto)
+	{
+		Book book = bookRepo.findById(dto.getId()).get();
+		// Voeg een exemplaar toe op basis van de bestaande exemplaren
+		for (int i=1; i<=dto.getBookCopyNumber(); i++) {
+			BookCopy bookCopy = new BookCopy();
+			List<BookCopy> copies = book.getBookcopies();
+			int size = copies.size();
+			System.out.println(size);
+			bookCopy.setBookCopyNr(size + i + 1);
+			bookCopy.setBook(book);
+			bookCopy.setStatus("available");
+			//copies.add(bookCopy);
+			repo.save(bookCopy);
+		}
 	}
 	
 	@PutMapping(value = "bookcopy/update/{id}")
