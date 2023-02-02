@@ -104,8 +104,8 @@ public class LoanController {
 		return loans;
 	}
 
-	@RequestMapping(value = "loan/search/user/{keyword}")
-	public List<LoanDTO> searchLoansByUser(@PathVariable String keyword, @RequestHeader("token") String token) {
+	@RequestMapping(value = "loan/search/user")
+	public List<LoanDTO> searchLoansByUser(@RequestHeader("keyword") String keyword, @RequestHeader("token") String token) {
 		ModelMapper modelMapper = new ModelMapper();
 
 		User user = userRepo.findByToken(token);
