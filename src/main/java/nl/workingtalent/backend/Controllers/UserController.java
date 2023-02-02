@@ -23,7 +23,9 @@ import nl.workingtalent.backend.DTOs.ChangePasswordResponseDTO;
 import nl.workingtalent.backend.DTOs.LoginRequestDto;
 import nl.workingtalent.backend.DTOs.LoginResponseDto;
 import nl.workingtalent.backend.Entities.Loan;
+import nl.workingtalent.backend.Entities.Reservation;
 import nl.workingtalent.backend.Entities.User;
+import nl.workingtalent.backend.Repositories.IReservationRepository;
 import nl.workingtalent.backend.Repositories.IUserRepository;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -33,6 +35,9 @@ public class UserController {
 	
 	@Autowired
 	IUserRepository repo;
+	
+	@Autowired
+	IReservationRepository reservationRepo;
 	
 	@Autowired
 	private EmailService emailService;
@@ -170,6 +175,12 @@ public class UserController {
 		foundUser.setDateAccountDeleted(LocalDateTime.now());
 		foundUser.setActive(false);
 		foundUser.setAdmin(false);
+		
+		List<Reservation> reservations = foundUser.getReservations();
+		for(Reservation reservation : reservations) {
+			reservationRepo.deleteById(reservation.getId());
+		}
+		foundUser.setReservations(null);
 		repo.save(foundUser);
 	}
 	
