@@ -30,12 +30,14 @@ public interface ILoanRepository extends JpaRepository<Loan, Long>{
 	
 	@Query("SELECT DISTINCT l FROM Loan l LEFT JOIN l.bookCopy bc LEFT JOIN l.user u LEFT JOIN bc.book b LEFT JOIN b.authors a "
 			+ "WHERE bc.id IS ?2 "
-			+ "AND (CONCAT(u.firstName, ' ', u.lastName) LIKE %?1%)")
+			+ "AND ((CONCAT(u.firstName, ' ', u.lastName) LIKE %?1%)"
+			+ "OR bc.bookCopyNr LIKE %?1%)")
 	public List<Loan> searchBookCopyByUser(String keyword, Long bookCopyId);
 	
 	@Query("SELECT DISTINCT l FROM Loan l JOIN l.bookCopy bc JOIN  bc.book b LEFT JOIN l.user u "
 			+ "WHERE b.id IS ?2 "
-			+ "AND (CONCAT(u.firstName, ' ', u.lastName) LIKE %?1%)")
+			+ "AND ((CONCAT(u.firstName, ' ', u.lastName) LIKE %?1%)"
+			+ "OR bc.bookCopyNr LIKE %?1%)")
 	public List<Loan> searchBookDetailsByUser(String keyword, Long bookId);
 
 	@Query("SELECT DISTINCT l FROM Loan l LEFT JOIN l.bookCopy bc JOIN l.user u LEFT JOIN bc.book b LEFT JOIN b.authors a "
