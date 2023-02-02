@@ -147,5 +147,15 @@ public class User{
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+	
+	
 	
 }
